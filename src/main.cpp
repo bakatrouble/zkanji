@@ -671,6 +671,15 @@ namespace
 
                 NTFSPermissionGuard permissionguard;
 
+                auto data_dir = QDir(ZKanji::appFolder() + "/data");
+
+                if (!data_dir.exists()) {
+                    if (!QFileInfo(ZKanji::appFolder()).isWritable()) {
+                        showAndQuit("zkanji", qApp->translate("", "App folder is not writable"));
+                    }
+                    QDir(ZKanji::appFolder()).mkdir("data");
+                }
+
                 if ((QFileInfo(ZKanji::appFolder() + "/data/zdict.zkj").exists() && !QFileInfo(ZKanji::appFolder() + "/data/zdict.zkj").isWritable()) ||
                     (QFileInfo(ZKanji::appFolder() + "/data/English.zkj").exists() && !QFileInfo(ZKanji::appFolder() + "/data/English.zkj").isWritable()) ||
                     !QFileInfo(ZKanji::appFolder() + "/data").isWritable())
