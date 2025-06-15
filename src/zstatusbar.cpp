@@ -14,6 +14,7 @@
 #include <QSizeGrip>
 #include <QApplication>
 #include <QLayoutItem>
+#include <QEvent>
 
 #include <cmath>
 
@@ -516,13 +517,13 @@ QString ZStatusBar::value(int index) const
 
 int ZStatusBar::add(QString title, int lsiz, QString value1, int vsiz1, QString value2, int vsiz2)
 {
-    QWidget *w = new QWidget();
+    auto *w = new QWidget();
 
-    QBoxLayout *l = new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
+    auto *l = new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(w->fontMetrics().averageCharWidth());
 
-    QBoxLayout *lv = new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
+    auto *lv = new QBoxLayout(QBoxLayout::LeftToRight, nullptr);
     lv->setContentsMargins(0, 0, 0, 0);
     lv->setSpacing(std::max(2, w->fontMetrics().averageCharWidth() / 3));
 
@@ -580,7 +581,7 @@ int ZStatusBar::add(QString title, int lsiz, QString value1, int vsiz1, QString 
     return tosigned(list.size()) - 1;
 }
 
-void ZStatusBar::setValues(int index, QString val1, QString val2)
+void ZStatusBar::setValues(int index, const QString& val1, const QString& val2)
 {
     if (index < 0 || index >= tosigned(list.size()) || (list[index].first != StatusTypes::TitleDouble && list[index].first != StatusTypes::DoubleValue))
         return;
@@ -617,19 +618,19 @@ bool ZStatusBar::event(QEvent *e)
         return true;
     }
 
-    return QWidget::event(e);
+    return QStatusBar::event(e);
 }
 
 void ZStatusBar::showEvent(QShowEvent *e)
 {
-    QWidget::showEvent(e);
+    QStatusBar::showEvent(e);
     if (((ZStatusLayout*)layout())->hasSizeGrip())
         ((ZStatusLayout*)layout())->createSizeGrip();
 }
 
 void ZStatusBar::resizeEvent(QResizeEvent *e)
 {
-    QWidget::resizeEvent(e);
+    QStatusBar::resizeEvent(e);
 }
 
 void ZStatusBar::paintEvent(QPaintEvent *e)
@@ -655,7 +656,7 @@ void ZStatusBar::paintEvent(QPaintEvent *e)
         }
     }
     else
-        QWidget::paintEvent(e);
+        QStatusBar::paintEvent(e);
 }
 
 void ZStatusBar::addWidget(QWidget *w)

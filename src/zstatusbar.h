@@ -135,7 +135,7 @@ public:
 
     // Changes the text of the two value labels on the widget at the index position. Only
     // valid if the widget was added by the two values override of add().
-    void setValues(int index, QString val1, QString val2);
+    void setValues(int index, const QString& val1, const QString& val2);
 
     void setSizeGripEnabled(bool showing/*, int dummy = 0*/);
 protected:
