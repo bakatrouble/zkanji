@@ -170,9 +170,9 @@ namespace
         {
             ZKanji::setNoData(true);
 
-            QFileInfo adir = QFileInfo(ZKanji::appFolder() + "/data");
-            if (!adir.exists() || !adir.isDir() || !adir.isWritable() || !adir.isReadable())
-                showAndQuit(qApp->translate("", "Error starting zkanji"), qApp->translate("", "The file containing the dictionary and other data is not found at the program's location. Quitting... (2)"));
+//            QFileInfo adir = QFileInfo(ZKanji::appFolder() + "/data");
+//            if (!adir.exists() || !adir.isDir() || !adir.isWritable() || !adir.isReadable())
+//                showAndQuit(qApp->translate("", "Error starting zkanji"), qApp->translate("", "The file containing the dictionary and other data is not found at the program's location. Quitting... (2)"));
         }
     }
 
@@ -634,6 +634,65 @@ namespace
 
     QString expath;
 
+    void runJMDictImport(const QString& path) {
+        QDir dir(path);
+
+        if (!dir.exists())
+        {
+          showAndQuit("zkanji", qApp->translate("", "Import folder does not exist."));
+          return;
+        }
+
+        NTFSPermissionGuard permissionguard;
+
+        auto data_dir = QDir(ZKanji::appFolder() + "/data");
+
+        if (!data_dir.exists()) {
+          if (!QFileInfo(ZKanji::appFolder()).isWritable()) {
+            showAndQuit("zkanji", qApp->translate("", "App folder is not writable"));
+          }
+          QDir(ZKanji::appFolder()).mkdir("data");
+        }
+
+        if ((QFileInfo::exists(ZKanji::appFolder() + "/data/zdict.zkj") && !QFileInfo(ZKanji::appFolder() + "/data/zdict.zkj").isWritable()) ||
+            (QFileInfo::exists(ZKanji::appFolder() + "/data/English.zkj") && !QFileInfo(ZKanji::appFolder() + "/data/English.zkj").isWritable()) ||
+            !QFileInfo(ZKanji::appFolder() + "/data").isWritable())
+        {
+            showAndQuit("zkanji", qApp->translate("", "File permissions do not allow creating and writing data files in the program's data folder."));
+            return;
+        }
+
+        DictImport diform;
+        std::unique_ptr<Dictionary> dict(diform.importDict(dir.path(), true));
+        if (dict != nullptr)
+          dict->saveImport(ZKanji::appFolder() + "/data");
+
+        ZKanji::cleanupImport();
+    }
+
+    void runExamplesImport(const QString& path) {
+        QDir dir(path);
+
+        NTFSPermissionGuard permissionguard;
+
+        if (!dir.exists() || !QFileInfo::exists(path + "/examples.utf") || !QFileInfo(path + "/examples.utf").isReadable())
+        {
+            showAndQuit("zkanji", qApp->translate("", "Import folder or examples file not found or not accessible."));
+            return;
+        }
+
+        if ((QFileInfo(ZKanji::appFolder() + "/data/examples.zkj").exists() && !QFileInfo(ZKanji::appFolder() + "/data/examples.zkj").isWritable()) ||
+            !QFileInfo(ZKanji::appFolder() + "/data").isWritable())
+        {
+            showAndQuit("zkanji", qApp->translate("", "File permissions do not allow creating and writing data files in the program's data folder."));
+            return;
+        }
+
+        // Saving the path to the examples file. It'll be imported later when the main
+        // dictionary has already loaded.
+        expath = path;
+    }
+
     void handleArguments(QStringList args)
     {
         if (args.isEmpty())
@@ -641,7 +700,6 @@ namespace
 
         bool ifound = false;
         bool efound = false;
-
 
         // Options to look for
         //
@@ -655,77 +713,25 @@ namespace
         {
             if ((args[ix] == "-i" || args[ix] == "-ie" || args[ix] == "-ei") && !ifound)
             {
-                QString d = args[ix + 1];
+                const QString& d = args[ix + 1];
 #ifdef Q_OS_WIN
                 d = d.replace(QChar('\\'), "/");
                 if (d[d.size() - 1] == QChar('/'))
                     d = d.left(d.size() - 1);
 #endif
-                QDir dir(d);
-
-                if (!dir.exists())
-                {
-                    showAndQuit("zkanji", qApp->translate("", "Import folder does not exist."));
-                    continue;
-                }
-
-                NTFSPermissionGuard permissionguard;
-
-                auto data_dir = QDir(ZKanji::appFolder() + "/data");
-
-                if (!data_dir.exists()) {
-                    if (!QFileInfo(ZKanji::appFolder()).isWritable()) {
-                        showAndQuit("zkanji", qApp->translate("", "App folder is not writable"));
-                    }
-                    QDir(ZKanji::appFolder()).mkdir("data");
-                }
-
-                if ((QFileInfo(ZKanji::appFolder() + "/data/zdict.zkj").exists() && !QFileInfo(ZKanji::appFolder() + "/data/zdict.zkj").isWritable()) ||
-                    (QFileInfo(ZKanji::appFolder() + "/data/English.zkj").exists() && !QFileInfo(ZKanji::appFolder() + "/data/English.zkj").isWritable()) ||
-                    !QFileInfo(ZKanji::appFolder() + "/data").isWritable())
-                {
-                    showAndQuit("zkanji", qApp->translate("", "File permissions do not allow creating and writing data files in the program's data folder."));
-                    continue;
-                }
-
-                DictImport diform;
-                std::unique_ptr<Dictionary> dict(diform.importDict(dir.path(), true));
-                if (dict.get() != nullptr)
-                    dict->saveImport(ZKanji::appFolder() + "/data");
-
-                ZKanji::cleanupImport();
-
+                runJMDictImport(d);
                 ifound = true;
             }
 
             if ((args[ix] == "-e" || args[ix] == "-ie" || args[ix] == "-ei") && !efound)
             {
-                QString d = args[ix + 1];
+                const QString& d = args[ix + 1];
 #ifdef Q_OS_WIN
                 d = d.replace(QChar('\\'), "/");
                 if (d[d.size() - 1] == QChar('/'))
                     d = d.left(d.size() - 1);
 #endif
-                QDir dir(d);
-
-                NTFSPermissionGuard permissionguard;
-
-                if (!dir.exists() || !QFileInfo(d + "/examples.utf").exists() || !QFileInfo(d + "/examples.utf").isReadable())
-                {
-                    showAndQuit("zkanji", qApp->translate("", "Import folder or examples file not found or not accessible."));
-                    continue;
-                }
-
-                if ((QFileInfo(ZKanji::appFolder() + "/data/examples.zkj").exists() && !QFileInfo(ZKanji::appFolder() + "/data/examples.zkj").isWritable()) ||
-                    !QFileInfo(ZKanji::appFolder() + "/data").isWritable())
-                {
-                    showAndQuit("zkanji", qApp->translate("", "File permissions do not allow creating and writing data files in the program's data folder."));
-                    continue;
-                }
-
-                // Saving the path to the examples file. It'll be imported later when the main
-                // dictionary has already loaded.
-                expath = d;
+                runExamplesImport(d);
                 efound = true;
             }
         }
@@ -898,8 +904,35 @@ int main(int argc, char **argv)
 
         gUI->loadScalingSetting();
 
-        if (ZKanji::noData())
-            showAndQuit(qApp->translate("", "Error starting zkanji"), qApp->translate("", "The file containing the dictionary and other data is not found at the program's location. Quitting... (1)"));
+        if (ZKanji::noData()) {
+            auto reply = QMessageBox::question(
+                nullptr,
+                qApp->translate("", "No dictionary found"),
+                qApp->translate("", "Select import directory?"),
+                QMessageBox::Yes | QMessageBox::No
+            );
+            if (reply == QMessageBox::No) {
+                showAndQuit(
+                    qApp->translate("", "Error starting zkanji"),
+                    qApp->translate(
+                        "",
+                        "The file containing the dictionary and other data is not found at the program's location. Quitting... (1)")
+                );
+            } else {
+                auto path = QFileDialog::getExistingDirectory(nullptr, "Choose import directory");
+                runJMDictImport(path);
+//                auto reply2 = QMessageBox::question(
+//                    nullptr,
+//                    qApp->translate("", "No dictionary found"),
+//                    qApp->translate("", "Also import examples from the selected directory?"),
+//                    QMessageBox::Yes | QMessageBox::No
+//                );
+//                if (reply2 == QMessageBox::Yes) {
+//                    runExamplesImport(path);
+//                }
+                ZKanji::setNoData(false);
+            }
+        }
 
         loadDictionaries();
         ZKanji::loadSimilarKanji(ZKanji::appFolder() + "/data/similar.txt");
