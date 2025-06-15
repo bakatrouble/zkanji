@@ -77,7 +77,7 @@
           <string>Close</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/closex.svg</normaloff>:/closex.svg</iconset>
          </property>
          <property name="iconSize">
@@ -113,7 +113,7 @@
           <string>Toggle grid to help stroke positioning</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/grid.svg</normaloff>:/grid.svg</iconset>
          </property>
          <property name="iconSize">
@@ -139,7 +139,7 @@
           <string>Allow searching for kana or non-kanji characters</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/genstrokes.svg</normaloff>:/genstrokes.svg</iconset>
          </property>
          <property name="iconSize">
@@ -160,17 +160,23 @@
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>5</width>
-           <height>5</height>
-          </size>
-         </property>
-        </spacer>
+        <widget class="QWidget" name="dragSpace" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>5</width>
+              <height>23</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <widget class="QToolButton" name="prevButton">
@@ -178,7 +184,7 @@
           <string>Undo last stroke</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/delmark.svg</normaloff>:/delmark.svg</iconset>
          </property>
          <property name="iconSize">
@@ -201,7 +207,7 @@
           <string>Redo last stroke</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/addmark.svg</normaloff>:/addmark.svg</iconset>
          </property>
          <property name="iconSize">
@@ -224,7 +230,7 @@
           <string>Erase drawn strokes</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/eraser.svg</normaloff>:/eraser.svg</iconset>
          </property>
          <property name="iconSize">
@@ -265,7 +271,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="Resources/resources.qrc"/>
+  <include location="../Resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

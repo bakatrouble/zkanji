@@ -736,6 +736,12 @@ bool RecognizerForm::event(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange)
         ui->retranslateUi(this);
+    if (e->type() == QEvent::MouseButtonPress) {
+        if (childAt(((QMouseEvent*)e)->pos()) == ui->dragSpace) {
+            windowHandle()->startSystemMove();
+            qInfo() << "MouseButtonPress" << Qt::endl;
+        }
+    }
 
     return base::event(e);
 }
