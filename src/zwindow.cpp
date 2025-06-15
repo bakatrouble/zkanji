@@ -134,7 +134,7 @@ void ZWindow::setStayOnTop(bool val)
 #endif
 
 #ifdef Q_OS_LINUX
-        if (testAttribute(Qt::WA_NativeWindow))
+        if (testAttribute(Qt::WA_NativeWindow) && QGuiApplication::platformName() == "xcb")
             x11_window_set_on_top(this, val);
         else
             setWindowFlags(val ? (flags /*| Qt::X11BypassWindowManagerHint*/ | Qt::WindowStaysOnTopHint) : (flags & ~(/*Qt::X11BypassWindowManagerHint |*/ Qt::WindowStaysOnTopHint)));
@@ -417,7 +417,7 @@ bool ZWindow::event(QEvent *e)
 #endif
 
 #ifdef Q_OS_LINUX
-    if (e->type() == QEvent::WinIdChange)
+    if (e->type() == QEvent::WinIdChange && QGuiApplication::platformName() == "xcb")
     {
         bool r = base::event(e);
         if (windowFlags().testFlag(Qt::WindowStaysOnTopHint))

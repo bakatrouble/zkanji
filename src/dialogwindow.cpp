@@ -158,7 +158,7 @@ void DialogWindow::closeError()
 bool DialogWindow::event(QEvent *e)
 {
 #ifdef Q_OS_LINUX
-    if (e->type() == QEvent::WinIdChange)
+    if (e->type() == QEvent::WinIdChange && QGuiApplication::platformName() == "xcb")
     {
         bool r = base::event(e);
         if (windowFlags().testFlag(Qt::WindowStaysOnTopHint))
