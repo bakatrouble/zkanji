@@ -713,6 +713,8 @@ bool DictImport::doImportExamples()
     // Index of the current word in the current sentence.
     uchar wordix = 0;
 
+    uint32_t total_sentence_ix = 0;
+
     // A list of block positions written to file.
     std::vector<int> blockpos;
 
@@ -986,7 +988,11 @@ bool DictImport::doImportExamples()
                 throw ZException("More than 6 million sentences in the example database.");
 
             ++blockix;
+
+            if (blockix % 10 == 0) {
+            }
         }
+      setInfoText(tr("%1 sentences processed").arg(++total_sentence_ix));
     }
 
     file.close();
