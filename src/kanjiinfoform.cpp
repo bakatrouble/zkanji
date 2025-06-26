@@ -636,6 +636,14 @@ QRect KanjiInfoForm::resizing(int side, QRect r)
 
 bool KanjiInfoForm::event(QEvent *e)
 {
+  if (e->type() == QEvent::MouseButtonPress) {
+    auto mouseEvent = dynamic_cast<QMouseEvent*>(e);
+    if (mouseEvent->button() == Qt::LeftButton &&
+        captionWidget()->rect().contains(mouseEvent->pos())) {
+      windowHandle()->startSystemMove();
+      return true;
+    }
+  }
     if (e->type() == InfoResizeEvent::Type())
     {
         _resized();

@@ -70,7 +70,7 @@
               <string>Lock displayed data. Other kanji will be displayed in a different window</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/lockopen.svg</normaloff>:/lockopen.svg</iconset>
              </property>
              <property name="iconSize">
@@ -240,7 +240,7 @@
           <string>Background grid</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/grid.svg</normaloff>:/grid.svg</iconset>
          </property>
          <property name="iconSize">
@@ -540,7 +540,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/repeatplaybtn.svg</normaloff>:/repeatplaybtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -608,7 +608,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/playbtn.svg</normaloff>:/playbtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -637,7 +637,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/playpausebtn.svg</normaloff>:/playpausebtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -666,7 +666,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/playstopbtn.svg</normaloff>:/playstopbtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -718,7 +718,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/playfrwbtn.svg</normaloff>:/playfrwbtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -741,7 +741,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/playsteprwbtn.svg</normaloff>:/playsteprwbtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -791,7 +791,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/playstepfwdbtn.svg</normaloff>:/playstepfwdbtn.svg</iconset>
                </property>
                <property name="iconSize">
@@ -844,7 +844,7 @@
                 <string>Stroke indicator shadows</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/shadow.svg</normaloff>:/shadow.svg</iconset>
                </property>
                <property name="iconSize">
@@ -867,7 +867,7 @@
                 <string>Stroke order numbers</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/strokenumber.svg</normaloff>:/strokenumber.svg</iconset>
                </property>
                <property name="iconSize">
@@ -890,7 +890,7 @@
                 <string>Stroke starting points</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/strokedir.svg</normaloff>:/strokedir.svg</iconset>
                </property>
                <property name="iconSize">
@@ -1234,7 +1234,7 @@
   <tabstop>speedSlider</tabstop>
  </tabstops>
  <resources>
-  <include location="Resources/resources.qrc"/>
+  <include location="../Resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
