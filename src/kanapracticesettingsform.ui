@@ -112,7 +112,7 @@
             <string>Check/uncheck all</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/checkall.svg</normaloff>:/checkall.svg</iconset>
            </property>
            <property name="iconSize">

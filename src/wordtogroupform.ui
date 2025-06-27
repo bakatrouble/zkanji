@@ -67,7 +67,7 @@
          <string>Word to dictionary...</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/resources.qrc">
+         <iconset resource="../Resources/resources.qrc">
           <normaloff>:/book.svg</normaloff>:/book.svg</iconset>
         </property>
         <property name="iconSize">

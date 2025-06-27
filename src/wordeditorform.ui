@@ -123,7 +123,7 @@
              <string>Write a Japanese character with mouse or pen</string>
             </property>
             <property name="icon">
-             <iconset resource="Resources/resources.qrc">
+             <iconset resource="../Resources/resources.qrc">
               <normaloff>:/kanjipen.svg</normaloff>:/kanjipen.svg</iconset>
             </property>
             <property name="iconSize">
@@ -301,7 +301,7 @@
          <string>Remove selected definition</string>
         </property>
         <property name="icon">
-         <iconset resource="Resources/resources.qrc">
+         <iconset resource="../Resources/resources.qrc">
           <normaloff>:/delmark.svg</normaloff>:/delmark.svg</iconset>
         </property>
         <property name="iconSize">

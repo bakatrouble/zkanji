@@ -54,7 +54,7 @@
           <string>Print</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/print.svg</normaloff>:/print.svg</iconset>
          </property>
          <property name="iconSize">
@@ -83,7 +83,7 @@
           <string>Page setup</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/pagesetup.svg</normaloff>:/pagesetup.svg</iconset>
          </property>
          <property name="iconSize">
@@ -106,7 +106,7 @@
           <string>Go to first page</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/firstpage.svg</normaloff>:/firstpage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -126,7 +126,7 @@
           <string>Go to previous page</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/prevpage.svg</normaloff>:/prevpage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -191,7 +191,7 @@
           <string>Go to next page</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/nextpage.svg</normaloff>:/nextpage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -214,7 +214,7 @@
           <string>Go to last page</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/lastpage.svg</normaloff>:/lastpage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -234,7 +234,7 @@
           <string>Continuous pages</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/onepage.svg</normaloff>:/onepage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -266,7 +266,7 @@
           <string>Two column display</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/twopage.svg</normaloff>:/twopage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -295,7 +295,7 @@
           <string>Fit whole page to window</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/fitpage.svg</normaloff>:/fitpage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -324,7 +324,7 @@
           <string>Stretch page width to window</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/stretchpage.svg</normaloff>:/stretchpage.svg</iconset>
          </property>
          <property name="iconSize">
@@ -353,7 +353,7 @@
           <string>Zoom out</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/zoomout.svg</normaloff>:/zoomout.svg</iconset>
          </property>
          <property name="iconSize">
@@ -373,7 +373,7 @@
           <string>Zoom in</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/zoomin.svg</normaloff>:/zoomin.svg</iconset>
          </property>
          <property name="iconSize">

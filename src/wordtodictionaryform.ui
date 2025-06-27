@@ -95,7 +95,7 @@
              <string>Word to group...</string>
             </property>
             <property name="icon">
-             <iconset resource="Resources/resources.qrc">
+             <iconset resource="../Resources/resources.qrc">
               <normaloff>:/togroup.svg</normaloff>:/togroup.svg</iconset>
             </property>
             <property name="iconSize">

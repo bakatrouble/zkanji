@@ -52,7 +52,7 @@
       </property>
       <widget class="QWidget" name="itemsTab">
        <attribute name="icon">
-        <iconset resource="Resources/resources.qrc">
+        <iconset resource="../Resources/resources.qrc">
          <normaloff>:/book.svg</normaloff>:/book.svg</iconset>
        </attribute>
        <attribute name="title">
@@ -199,7 +199,7 @@
                 <string>Add parts of selected words to the queue</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/addtoqueue.svg</normaloff>:/addtoqueue.svg</iconset>
                </property>
                <property name="iconSize">
@@ -222,7 +222,7 @@
                 <string>Move studied words back to the queue, clearing their study data</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/backtoqueue.svg</normaloff>:/backtoqueue.svg</iconset>
                </property>
                <property name="iconSize">
@@ -245,7 +245,7 @@
                 <string>Remove selected words from the deck, clearing their study data</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/delmark.svg</normaloff>:/delmark.svg</iconset>
                </property>
                <property name="iconSize">
@@ -388,7 +388,7 @@
       </widget>
       <widget class="QWidget" name="statsTab">
        <attribute name="icon">
-        <iconset resource="Resources/resources.qrc">
+        <iconset resource="../Resources/resources.qrc">
          <normaloff>:/stats.svg</normaloff>:/stats.svg</iconset>
        </attribute>
        <attribute name="title">

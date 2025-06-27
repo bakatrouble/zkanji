@@ -438,7 +438,7 @@
                   <item>
                    <widget class="QToolButton" name="recognizeButton">
                     <property name="icon">
-                     <iconset resource="Resources/resources.qrc">
+                     <iconset resource="../Resources/resources.qrc">
                       <normaloff>:/kanjipen.svg</normaloff>:/kanjipen.svg</iconset>
                     </property>
                     <property name="iconSize">

@@ -112,7 +112,7 @@
             <string>Create new word deck. Words added to a deck can be studied separately from other decks</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/addmark.svg</normaloff>:/addmark.svg</iconset>
            </property>
            <property name="iconSize">
@@ -135,7 +135,7 @@
             <string>Remove selected deck. All study data is removed with the deck</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/delmark.svg</normaloff>:/delmark.svg</iconset>
            </property>
            <property name="iconSize">
@@ -175,7 +175,7 @@
             <string>Items</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/book.svg</normaloff>:/book.svg</iconset>
            </property>
            <property name="iconSize">
@@ -201,7 +201,7 @@
             <string>Statistics</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/stats.svg</normaloff>:/stats.svg</iconset>
            </property>
            <property name="iconSize">

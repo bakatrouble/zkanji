@@ -179,7 +179,7 @@
            <string>Word filtering by attributes. Right-click to edit filters</string>
           </property>
           <property name="icon">
-           <iconset resource="Resources/resources.qrc">
+           <iconset resource="../Resources/resources.qrc">
             <normaloff>:/filters.svg</normaloff>:/filters.svg</iconset>
           </property>
           <property name="iconSize">
@@ -262,7 +262,7 @@
                 <string>Any start of word</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/anystart.svg</normaloff>:/anystart.svg</iconset>
                </property>
                <property name="iconSize">
@@ -288,7 +288,7 @@
                 <string>Any end of word</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/anyend.svg</normaloff>:/anyend.svg</iconset>
                </property>
                <property name="iconSize">
@@ -314,7 +314,7 @@
                 <string>Hiragana/katakana sensitive search</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/strictsrch.svg</normaloff>:/strictsrch.svg</iconset>
                </property>
                <property name="iconSize">
@@ -349,7 +349,7 @@
               <string>Write a Japanese character with mouse or pen</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/kanjipen.svg</normaloff>:/kanjipen.svg</iconset>
              </property>
              <property name="iconSize">
@@ -385,7 +385,7 @@
               <string>Search for conjugated words</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/deinf.svg</normaloff>:/deinf.svg</iconset>
              </property>
              <property name="iconSize">
@@ -448,7 +448,7 @@
                 <string>Any end of word</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/anyend.svg</normaloff>:/anyend.svg</iconset>
                </property>
                <property name="iconSize">
@@ -477,7 +477,7 @@
                 <string>Case sensitive search</string>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/strictsrch.svg</normaloff>:/strictsrch.svg</iconset>
                </property>
                <property name="iconSize">
@@ -544,7 +544,7 @@
           <string>Show definitions in separate rows</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/multi.svg</normaloff>:/multi.svg</iconset>
          </property>
          <property name="iconSize">
@@ -598,7 +598,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="Resources/resources.qrc">
+             <iconset resource="../Resources/resources.qrc">
               <normaloff>:/examples.svg</normaloff>:/examples.svg</iconset>
             </property>
             <property name="iconSize">

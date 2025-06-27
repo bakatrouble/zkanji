@@ -292,7 +292,7 @@
           <string>Switch between Japanese/English, Japanese only or English only display</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/rotate.svg</normaloff>:/rotate.svg</iconset>
          </property>
          <property name="iconSize">
@@ -328,7 +328,7 @@
           <string>Link example to word</string>
          </property>
          <property name="icon">
-          <iconset resource="Resources/resources.qrc">
+          <iconset resource="../Resources/resources.qrc">
            <normaloff>:/paperclip.svg</normaloff>:/paperclip.svg</iconset>
          </property>
          <property name="iconSize">

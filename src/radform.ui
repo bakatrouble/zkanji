@@ -279,7 +279,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Resources/resources.qrc">
+                <iconset resource="../Resources/resources.qrc">
                  <normaloff>:/anyend.svg</normaloff>:/anyend.svg</iconset>
                </property>
                <property name="iconSize">
@@ -478,7 +478,7 @@
               <string>Up</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/upmark.svg</normaloff>:/upmark.svg</iconset>
              </property>
              <property name="iconSize">
@@ -510,7 +510,7 @@
               <string>Down</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/downmark.svg</normaloff>:/downmark.svg</iconset>
              </property>
              <property name="iconSize">
@@ -542,7 +542,7 @@
               <string>Remove</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/delmark.svg</normaloff>:/delmark.svg</iconset>
              </property>
              <property name="iconSize">
@@ -590,7 +590,7 @@
               <string>Remove all</string>
              </property>
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/xmark.svg</normaloff>:/xmark.svg</iconset>
              </property>
              <property name="iconSize">

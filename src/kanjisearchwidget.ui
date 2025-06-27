@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>421</width>
+    <width>464</width>
     <height>480</height>
    </rect>
   </property>
@@ -460,7 +460,7 @@
             <string>Allow partial meaning</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/anyend.svg</normaloff>:/anyend.svg</iconset>
            </property>
            <property name="iconSize">
@@ -555,7 +555,7 @@
                  <string>Allow partial reading</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="Resources/resources.qrc">
+                 <iconset resource="../Resources/resources.qrc">
                   <normaloff>:/anyend.svg</normaloff>:/anyend.svg</iconset>
                 </property>
                 <property name="iconSize">
@@ -578,7 +578,7 @@
                  <string>Hiragana for kun and katakana for ON readings</string>
                 </property>
                 <property name="icon">
-                 <iconset resource="Resources/resources.qrc">
+                 <iconset resource="../Resources/resources.qrc">
                   <normaloff>:/strictsrch.svg</normaloff>:/strictsrch.svg</iconset>
                 </property>
                 <property name="iconSize">
@@ -1027,7 +1027,7 @@
            <item>
             <widget class="QToolButton" name="skip1Button">
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/SKIP1.svg</normaloff>:/SKIP1.svg</iconset>
              </property>
              <property name="iconSize">
@@ -1050,7 +1050,7 @@
            <item>
             <widget class="QToolButton" name="skip2Button">
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/SKIP2.svg</normaloff>:/SKIP2.svg</iconset>
              </property>
              <property name="iconSize">
@@ -1070,7 +1070,7 @@
            <item>
             <widget class="QToolButton" name="skip3Button">
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/SKIP3.svg</normaloff>:/SKIP3.svg</iconset>
              </property>
              <property name="iconSize">
@@ -1090,7 +1090,7 @@
            <item>
             <widget class="QToolButton" name="skip4Button">
              <property name="icon">
-              <iconset resource="Resources/resources.qrc">
+              <iconset resource="../Resources/resources.qrc">
                <normaloff>:/SKIP4.svg</normaloff>:/SKIP4.svg</iconset>
              </property>
              <property name="iconSize">
@@ -1530,7 +1530,7 @@
   <tabstop>fromCBox</tabstop>
  </tabstops>
  <resources>
-  <include location="Resources/resources.qrc"/>
+  <include location="../Resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

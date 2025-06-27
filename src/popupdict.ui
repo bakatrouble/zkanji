@@ -118,7 +118,7 @@
         <item>
          <widget class="QToolButton" name="floatButton">
           <property name="icon">
-           <iconset resource="Resources/resources.qrc">
+           <iconset resource="../Resources/resources.qrc">
             <normaloff>:/floatwnd.svg</normaloff>:/floatwnd.svg</iconset>
           </property>
           <property name="iconSize">
@@ -135,7 +135,7 @@
         <item>
          <widget class="QToolButton" name="pinButton">
           <property name="icon">
-           <iconset resource="Resources/resources.qrc">
+           <iconset resource="../Resources/resources.qrc">
             <normaloff>:/closex.svg</normaloff>:/closex.svg</iconset>
           </property>
           <property name="iconSize">

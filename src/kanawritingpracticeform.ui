@@ -232,7 +232,7 @@
              <string>Play/stop stroke order animation for syllable</string>
             </property>
             <property name="icon">
-             <iconset resource="Resources/resources.qrc">
+             <iconset resource="../Resources/resources.qrc">
               <normaloff>:/playbtn.svg</normaloff>:/playbtn.svg</iconset>
             </property>
             <property name="iconSize">
@@ -429,7 +429,7 @@
             <string>Undo last stroke</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/delmark.svg</normaloff>:/delmark.svg</iconset>
            </property>
            <property name="iconSize">
@@ -455,7 +455,7 @@
             <string>Redo last stroke</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/addmark.svg</normaloff>:/addmark.svg</iconset>
            </property>
            <property name="iconSize">
@@ -481,7 +481,7 @@
             <string>Erase drawn strokes</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/eraser.svg</normaloff>:/eraser.svg</iconset>
            </property>
            <property name="iconSize">
@@ -504,7 +504,7 @@
             <string>Toggle grid to help stroke positioning</string>
            </property>
            <property name="icon">
-            <iconset resource="Resources/resources.qrc">
+            <iconset resource="../Resources/resources.qrc">
              <normaloff>:/grid.svg</normaloff>:/grid.svg</iconset>
            </property>
            <property name="iconSize">
