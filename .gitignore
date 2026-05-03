@@ -1,2 +1,6 @@
 /cmake-build-*
 /.idea
+/dataimports/*.bak*
+/dataimports/JMdict
+/dataimports/kanjidic
+/dataimports/radkfile
