@@ -651,7 +651,7 @@ void WordStudyForm::paintEvent(QPaintEvent *e)
     QPainter p(this);
 
     QColor c = newcard ? Settings::uiColor(ColorSettings::StudyNew) :  Settings::uiColor(ColorSettings::StudyWrong);
-    p.fillRect(rect(), mixColors(c, palette().color(QPalette::Background), 0.03));
+    p.fillRect(rect(), mixColors(c, palette().color(QPalette::Window), 0.03));
 
     p.setPen(QPen(c, 4));
     p.setBrush(Qt::transparent);

@@ -620,7 +620,7 @@ void helper_createStatusWidget(QWidget *w, QLabel *lb1, QString lbstr1, double s
 //    QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, w);
 //    layout->addWidget(lb1);
 //    layout->addWidget(lb2);
-//    layout->setMargin(0);
+//    layout->setContentsMargins(0, 0, 0, 0);
 //    if (spacing != -1)
 //        layout->setSpacing(spacing);
 //

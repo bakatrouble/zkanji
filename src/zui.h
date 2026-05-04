@@ -154,7 +154,7 @@ QWidget* createStatusWidget(QWidget *parent, int spacing, QLabel *lb1, QString l
 {
     QWidget *w = new QWidget(parent);
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, w);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     if (spacing != -1)
         layout->setSpacing(spacing);
 

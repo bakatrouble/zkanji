@@ -49,7 +49,8 @@ ZToolTip::ZToolTip(const QPoint &screenpos, QWidget *content, QWidget *owner, co
     
     content->setParent(this);
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-    layout->setMargin(/*4 +*/ qApp->style()->pixelMetric(QStyle::PM_ToolTipLabelFrameWidth, 0, this));
+    int margin = qApp->style()->pixelMetric(QStyle::PM_ToolTipLabelFrameWidth, 0, this);
+    layout->setContentsMargins(margin, margin, margin, margin);
     setLayout(layout);
     layout->addWidget(content);
 

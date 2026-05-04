@@ -570,7 +570,7 @@ KanjiSearchWidget::KanjiSearchWidget(QWidget *parent) : base(parent), ui(new Ui:
     for (QLayoutItem *item : tmpitems)
         optionsLayout->addItem(item);
 
-    optionsLayout->setMargin(0);
+    optionsLayout->setContentsMargins(0, 0, 0, 0);
     optionsLayout->setVerticalSpacing(3);
     optionsLayout->setHorizontalSpacing(8);
     ui->optionsWidget->setLayout(optionsLayout);
@@ -586,7 +586,7 @@ KanjiSearchWidget::KanjiSearchWidget(QWidget *parent) : base(parent), ui(new Ui:
     for (QLayoutItem *item : tmpitems)
         buttonsLayout->addItem(item);
 
-    buttonsLayout->setMargin(0);
+    buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setVerticalSpacing(0);
     buttonsLayout->setHorizontalSpacing(2);
     ui->buttonsWidget->setLayout(buttonsLayout);

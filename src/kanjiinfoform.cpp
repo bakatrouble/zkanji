@@ -84,7 +84,7 @@ KanjiInfoForm::KanjiInfoForm(QWidget *parent) : base(parent), ui(new Ui::KanjiIn
     ui->dictWidget->view()->setGroupDisplay(true);
 
     readingCBox = new QComboBox(this);
-    readingCBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    readingCBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     readingCBox->setMinimumContentsLength(6);
     ui->dictWidget->addBackWidget(readingCBox);
 

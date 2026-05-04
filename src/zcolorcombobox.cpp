@@ -661,7 +661,7 @@ void ZColorComboBox::computeSizeHint() const
     if (opt.rect.isValid())
         opt.rect.setWidth(sizecache.width());
     sizecache = s->sizeFromContents(QStyle::CT_ComboBox, &opt, sizecache, this);
-    sizecache = sizecache.expandedTo(qApp->globalStrut());
+    sizecache = sizecache.expandedTo(QSize(12, 12));  // globalStrut
 }
 
 

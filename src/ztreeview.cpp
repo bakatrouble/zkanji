@@ -226,7 +226,7 @@ QItemSelectionModel::SelectionFlags ZTreeView::selectionCommand(const QModelInde
             }
             opt.styleObject = nullptr;
 
-            QRect r = style()->subElementRect(QStyle::SE_ViewItemCheckIndicator, &opt, this);
+            QRect r = style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &opt, this);
 
             // We return QItemSelectionModel::Current to prevent the selection anchor to be
             // changed in the original implementation of QAbstractItemView::mousePressEvent().

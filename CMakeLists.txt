@@ -3,6 +3,7 @@ project(zkanji LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 find_package(Qt5 COMPONENTS Widgets Svg PrintSupport Network REQUIRED)
 if (UNIX)
