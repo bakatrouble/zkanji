@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=zkanji
+Path={prefix}
+Exec={prefix}/zkanji
+Icon={prefix}/../Resources/programicon.svg
+Terminal=false
+Categories=Education;Languages;
