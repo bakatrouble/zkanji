@@ -373,8 +373,10 @@ private:
     typedef GroupCategoryBase   base;
 };
 
-typedef GroupCategory<WordGroup>    WordGroupCategory;
-typedef GroupCategory<KanjiGroup>   KanjiGroupCategory;
+typedef GroupCategory<WordGroup> WordGroupCategory;
+template class GroupCategory<WordGroup>;
+typedef GroupCategory<KanjiGroup> KanjiGroupCategory;
+template class GroupCategory<KanjiGroup>;
 
 struct WordEntry;
 struct WordStudySettings;

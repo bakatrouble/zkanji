@@ -4,6 +4,8 @@
 ** GNU General Public License version 3. See the file LICENSE for details.
 **/
 
+#include "groups.h"
+
 #include <QFile>
 #include <QDataStream>
 #include <QSet>
@@ -1803,7 +1805,7 @@ GroupCategory<T>::GroupCategory(self_type *parent, QString name) : base(parent, 
 }
 
 template<typename T>
-GroupCategory<T>::GroupCategory(self_type &&src)
+GroupCategory<T>::GroupCategory(self_type &&src) : base(src.parentCategory(), src.name())
 {
     *this = std::move(src);
 }
@@ -1812,7 +1814,7 @@ template<typename T>
 GroupCategory<T>& GroupCategory<T>::operator=(self_type &&src)
 {
     base::operator=(std::move(src));
-    return this;
+    return *this;
 }
 
 //template<typename T>
@@ -1834,13 +1836,13 @@ const T* GroupCategory<T>::items(int index) const
 }
 
 template<typename T>
-typename GroupCategory<T>::self_type* GroupCategory<T>::categories(int index)
+GroupCategory<T>::self_type* GroupCategory<T>::categories(int index)
 {
     return dynamic_cast<self_type*>(base::categories(index));
 }
 
 template<typename T>
-const typename GroupCategory<T>::self_type* GroupCategory<T>::categories(int index) const
+const GroupCategory<T>::self_type* GroupCategory<T>::categories(int index) const
 {
     return dynamic_cast<const self_type*>(base::categories(index));
 }
