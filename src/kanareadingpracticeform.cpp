@@ -6,7 +6,6 @@
 
 #include <QtEvents>
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include "kanareadingpracticeform.h"

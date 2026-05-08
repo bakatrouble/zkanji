@@ -628,12 +628,12 @@ void addInflectionVariant(QString str, QString hstr, int newlen, QString suffix,
     static const QString dekirukana = toKana("dekiru", 6);
     static const QString irukana = toKana("iru", 3);
     static const QString arukana = toKana("aru", 3);
-    static const ushort dekirukanji1arr[] { 0x51FA, 0x6765, 0x308B, 0 };
-    static const ushort dekirukanji2arr[] { 0x51FA, 0x4F86, 0x308B, 0 };
+    static constexpr char16_t dekirukanji1arr[] { 0x51FA, 0x6765, 0x308B, 0 };
+    static constexpr char16_t dekirukanji2arr[] { 0x51FA, 0x4F86, 0x308B, 0 };
     static const QString dekirukanji1 = QString::fromUtf16(dekirukanji1arr);
     static const QString dekirukanji2 = QString::fromUtf16(dekirukanji2arr);
 
-    infsize = std::max(0, infsize - std::max(0, str.size() - newlen)) + suffix.size();
+    infsize = std::max(0, infsize - std::max(0, static_cast<int>(str.size()) - newlen)) + suffix.size();
 
     str = str.left(newlen) + suffix;
     hstr = hstr.left(newlen) + suffix;
@@ -729,11 +729,11 @@ void deinflectedForms(QString str, QString hstr, int infsize, std::vector<InfTyp
         addInflectionVariant(str, hstr, hstr.size() - 1, QString(), infsize, WordTypes::NaAdj, oldtype, std::vector<InfTypes>(), hstr.at(hstr.size() - 1).unicode() == 0x306A ? InfTypes::Na : hstr.at(hstr.size() - 1).unicode() == 0x306B ? InfTypes::Ku : InfTypes::Te, results);
 
     for (int ix = 0, siz = tosigned(ikuinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(ikuinf[ix].size()) == ikuinf[ix])
+        if (hstr.right(ikuinf[ix].size()) == ikuinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - ikuinf[ix].size(), QChar(0x304f) /* ku */, infsize, WordTypes::IkuVerb, oldtype, inf, ikuinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(suruinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(suruinf[ix].size()) == suruinf[ix])
+        if (hstr.right(suruinf[ix].size()) == suruinf[ix])
         {
             addInflectionVariant(str, hstr, hstr.size() - suruinf[ix].size(), surukana, infsize, WordTypes::SuruVerb, oldtype, inf, suruinftype[ix], results);
             addInflectionVariant(str, hstr, hstr.size() - suruinf[ix].size(), QString(), infsize, WordTypes::TakesSuru, oldtype, inf, suruinftype[ix], results);
@@ -744,7 +744,7 @@ void deinflectedForms(QString str, QString hstr, int infsize, std::vector<InfTyp
         for (int ix = 0, siz = tosigned(kuruinf.size()); ix != siz; ++ix)
         {
             int len = kuruinf[ix].size();
-            if (hstr.size() >= len && qcharncmp(hstr.rightRef(len - 1).constData(), kuruinf[ix].rightData(len - 1), len - 1) == 0)
+            if (hstr.size() >= len && qcharncmp(hstr.right(len - 1).constData(), kuruinf[ix].rightData(len - 1), len - 1) == 0)
             {
                 if (hstr.at(hstr.size() - len) == kuruinf[ix][0])
                     addInflectionVariant(str, hstr, hstr.size() - len, kurukana, infsize, WordTypes::KuruVerb, oldtype, inf, kuruinftype[ix], results);
@@ -755,53 +755,53 @@ void deinflectedForms(QString str, QString hstr, int infsize, std::vector<InfTyp
     }
 
     for (int ix = 0, siz = tosigned(uinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(uinf[ix].size()) == uinf[ix])
+        if (hstr.right(uinf[ix].size()) == uinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - uinf[ix].size(), QChar(0x3046) /* u */, infsize, WordTypes::GodanVerb, oldtype, inf, uinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(kuinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(kuinf[ix].size()) == kuinf[ix])
+        if (hstr.right(kuinf[ix].size()) == kuinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - kuinf[ix].size(), QChar(0x304f) /* ku */, infsize, WordTypes::GodanVerb, oldtype, inf, kuinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(guinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(guinf[ix].size()) == guinf[ix])
+        if (hstr.right(guinf[ix].size()) == guinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - guinf[ix].size(), QChar(0x3050) /* gu */, infsize, WordTypes::GodanVerb, oldtype, inf, guinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(suinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(suinf[ix].size()) == suinf[ix])
+        if (hstr.right(suinf[ix].size()) == suinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - suinf[ix].size(), QChar(0x3059) /* su */, infsize, WordTypes::GodanVerb, oldtype, inf, suinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(tuinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(tuinf[ix].size()) == tuinf[ix])
+        if (hstr.right(tuinf[ix].size()) == tuinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - tuinf[ix].size(), QChar(0x3064) /* tu */, infsize, WordTypes::GodanVerb, oldtype, inf, tuinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(nuinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(nuinf[ix].size()) == nuinf[ix])
+        if (hstr.right(nuinf[ix].size()) == nuinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - nuinf[ix].size(), QChar(0x306C) /* nu */, infsize, WordTypes::GodanVerb, oldtype, inf, nuinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(buinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(buinf[ix].size()) == buinf[ix])
+        if (hstr.right(buinf[ix].size()) == buinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - buinf[ix].size(), QChar(0x3076) /* bu */, infsize, WordTypes::GodanVerb, oldtype, inf, buinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(muinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(muinf[ix].size()) == muinf[ix])
+        if (hstr.right(muinf[ix].size()) == muinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - muinf[ix].size(), QChar(0x3080) /* mu */, infsize, WordTypes::GodanVerb, oldtype, inf, muinftype[ix], results);
 
     for (int ix = 0, siz = tosigned(r_uinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(r_uinf[ix].size()) == r_uinf[ix])
+        if (hstr.right(r_uinf[ix].size()) == r_uinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - r_uinf[ix].size(), QChar(0x308B) /* ru */, infsize, WordTypes::GodanVerb, oldtype, inf, r_uinftype[ix], results);
 
     if (inf.empty())
         addInflectionVariant(str, hstr, hstr.size(), QChar(0x308B) /* ru */, infsize, WordTypes::IchidanVerb, oldtype, inf, InfTypes::I, results);
 
     for (int ix = 0, siz = tosigned(ruinf.size()); ix != siz; ++ix)
-        if (hstr.rightRef(ruinf[ix].size()) == ruinf[ix])
+        if (hstr.right(ruinf[ix].size()) == ruinf[ix])
             addInflectionVariant(str, hstr, hstr.size() - ruinf[ix].size(), QChar(0x308B) /* ru */, infsize, WordTypes::IchidanVerb, oldtype, inf, ruinftype[ix], results);
 }
 
 void deinflectAdjective(QString str, QString hstr, smartvector<InflectionForm> &results)
 {
-    static const ushort iikana[] { 0x3044, 0x3044, 0 };
-    static const ushort waiikana[] { 0x308f, 0x3044, 0x3044, 0 };
+    static constexpr char16_t iikana[] { 0x3044, 0x3044, 0 };
+    static constexpr char16_t waiikana[] { 0x308f, 0x3044, 0x3044, 0 };
 
     std::vector<InfTypes> inflist;
 
@@ -831,27 +831,27 @@ void deinflectAdjective(QString str, QString hstr, smartvector<InflectionForm> &
             bool isvalid = true;
             for (int iy = 0, sizy = tosigned(invalidadj.size()); iy != sizy; ++iy)
             {
-                if (hstr.rightRef(invalidadj[iy].size()) == invalidadj[iy] && (iy != sizy - 1 || hstr.size() == 2))
+                if (hstr.right(invalidadj[iy].size()) == invalidadj[iy] && (iy != sizy - 1 || hstr.size() == 2))
                 {
                     isvalid = false;
                     break;
                 }
             }
 
-            if (isvalid && hstr.rightRef(3) == QString::fromUtf16(waiikana) && adjinft[ix] == InfTypes::Sou)
+            if (isvalid && hstr.right(3) == QString::fromUtf16(waiikana) && adjinft[ix] == InfTypes::Sou)
                 isvalid = false;
 
             if (!isvalid)
                 break;
 
             // Forms reached after removing the -sou inflection from nasasou or yosasou, which need special handling
-            if (adjinft[ix] == InfTypes::Sou && hstr.size() > 3 && (hstr.rightRef(3) == nasaiyosai[0] || hstr.rightRef(3) == nasaiyosai[1]))
+            if (adjinft[ix] == InfTypes::Sou && hstr.size() > 3 && (hstr.right(3) == nasaiyosai[0] || hstr.right(3) == nasaiyosai[1]))
             {
 
                 // The -nasasou ending becomes -nasai which is the -sou form of -nai. This would result
                 // in the word "abunai" listed as being inflected with -sou when "abunasasou" is incorrect.
                 // Only allow this ending if there are other inflections affecting the word too.
-                bool na = hstr.at(hstr.size() - 3) == 0x306A /* na */;
+                bool na = hstr.at(hstr.size() - 3) == QChar(0x306A) /* na */;
                 addInflectionVariant(str, hstr, hstr.size() - 2, QChar(0x3044), infsize, na ? WordTypes::Count : WordTypes::TrueAdj, oldtype, inflist, adjinft[ix], results);
                 if (!na)
                     addInflectionVariant(str, hstr, hstr.size() - 3, QString::fromUtf16(iikana), infsize, WordTypes::TrueAdj, oldtype, inflist, adjinft[ix], results);
@@ -870,7 +870,7 @@ void deinflectAdjective(QString str, QString hstr, smartvector<InflectionForm> &
 
             // Special handling for i-adjectives ending in yoi. Add ii ending words too.
             for (int iy = 0, sizy = tosigned(adjyoi.size()); iy != sizy; ++iy)
-                if (hstr.rightRef(adjyoi[iy].size()) == adjyoi[iy] && (iy != sizy - 1 || hstr.size() == 2))
+                if (hstr.right(adjyoi[iy].size()) == adjyoi[iy] && (iy != sizy - 1 || hstr.size() == 2))
                     addInflectionVariant(str, hstr, hstr.size() - 2, QString::fromUtf16(iikana), infsize, WordTypes::TrueAdj, oldtype, inflist, adjinft[ix], results);
 
             addInflectionVariant(str, hstr, hstr.size(), QString(), infsize, WordTypes::TrueAdj, oldtype, inflist, adjinft[ix], results);

@@ -13,7 +13,6 @@
 #include <QStringBuilder>
 #include <QFormLayout>
 #include <QSplitter>
-#include <QDesktopWidget>
 #include <QScreen>
 
 #include "globalui.h"
@@ -1107,7 +1106,7 @@ void GlobalUI::importBaseDict()
 
         saveguard.release();
         hideguard.release();
-        QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The base dictionary update failed. Depending on the error, the base dictionary file might be compromised.") % QString("\n\n%1").arg(Error::last()));
+        QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The base dictionary update failed. Depending on the error, the base dictionary file might be compromised.") % QString("\n\n%1").arg(Error::last().toString()));
         return;
     }
 
@@ -1115,7 +1114,7 @@ void GlobalUI::importBaseDict()
     {
         saveguard.release();
         hideguard.release();
-        QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("Error occurred while trying to copy base dictionary to user folder. To avoid corrupting the user data file, the program will terminate.") % QString("\n\n%1").arg(Error::last()));
+        QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("Error occurred while trying to copy base dictionary to user folder. To avoid corrupting the user data file, the program will terminate.") % QString("\n\n%1").arg(Error::last().toString()));
         exit(0);
         return;
     }
@@ -1124,7 +1123,7 @@ void GlobalUI::importBaseDict()
     {
         saveguard.release();
         hideguard.release();
-        QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("Error occurred while trying to save user data for the base dictionary. Depending on the error, the user data file might be compromised.") % QString("\n\n%1").arg(Error::last()));
+        QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("Error occurred while trying to save user data for the base dictionary. Depending on the error, the user data file might be compromised.") % QString("\n\n%1").arg(Error::last().toString()));
         return;
     }
 
@@ -1490,7 +1489,7 @@ void GlobalUI::dictImportAction()
 
             saveguard.release();
             hideguard.release();
-            QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The dictionary or its user data file couldn't be saved. Depending on the error, the files might be compromised.") % QString("\n\n%1").arg(Error::last()));
+            QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The dictionary or its user data file couldn't be saved. Depending on the error, the files might be compromised.") % QString("\n\n%1").arg(Error::last().toString()));
             return;
         }
 
@@ -1510,7 +1509,7 @@ void GlobalUI::dictImportAction()
     {
         if (!dict->save(ZKanji::userFolder() + QString("/data/%1.zkdict").arg(dict->name())) || !dict->saveUserData(ZKanji::userFolder() + QString("/data/%1.zkuser").arg(dict->name())))
         {
-            QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The dictionary or its user data file couldn't be saved. Depending on the error, the files might be compromised.") % QString("\n\n%1").arg(Error::last()));
+            QMessageBox::warning(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The dictionary or its user data file couldn't be saved. Depending on the error, the files might be compromised.") % QString("\n\n%1").arg(Error::last().toString()));
             return;
         }
         QMessageBox::information(!mainforms.empty() ? mainforms[0] : nullptr, "zkanji", tr("The dictionary has been updated."));

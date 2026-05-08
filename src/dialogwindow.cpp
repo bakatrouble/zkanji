@@ -6,7 +6,6 @@
 
 #include <QPushButton>
 #include <QtEvents>
-#include <QDesktopWidget>
 #include <QApplication>
 #include <QWindow>
 #include <QScreen>
@@ -254,15 +253,15 @@ void DialogWindow::showEvent(QShowEvent *e)
         // Center window above the parent or if the parent is the locked popup dictionary or
         // popup kanji search, center of screen.
 
-        int screen;
+        QScreen *screen;
         if (w != nullptr) {
-            screen = qApp->desktop()->screenNumber(w);
+            screen = w->screen();
         } else if (qApp->primaryScreen()->virtualSiblings().contains(qApp->primaryScreen())) {
-            screen = qApp->screens().indexOf(qApp->screenAt(QCursor::pos()));
+            screen = qApp->screenAt(QCursor::pos());
         } else {
-            screen = qApp->desktop()->screenNumber(this);
+            screen = this->screen();
         }
-        QRect scr = qApp->screens().at(screen)->geometry();
+        QRect scr = screen->geometry();
 
         QPoint mid;
         if (w != nullptr && w != PopupDictionary::getInstance() && w != PopupKanjiSearch::getInstance())
@@ -271,10 +270,10 @@ void DialogWindow::showEvent(QShowEvent *e)
             mid = scr.center();
 
         if (w != nullptr)
-            screen = qApp->desktop()->screenNumber(w);
+            screen = w->screen();
 
         if (QWindow *h = windowHandle())
-            h->setScreen(QGuiApplication::screens().at(screen));
+            h->setScreen(screen);
 
         QRect fg = frameGeometry();
         move(

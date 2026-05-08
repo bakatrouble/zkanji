@@ -6,7 +6,6 @@
 
 #include <QtEvents>
 #include <QImage>
-#include <QDesktopWidget>
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include "wordtestresultsform.h"
@@ -163,7 +162,7 @@ void WordTestResultsForm::exec(WordStudy *s)
     setAttribute(Qt::WA_DontShowOnScreen, false);
 
     QRect r = frameGeometry();
-    QRect sr = qApp->desktop()->screenGeometry((QWidget*)gUI->mainForm());
+    QRect sr = ((QWidget*)gUI->mainForm())->screen()->geometry();
     move(sr.left() + (sr.width() - r.width()) / 2, sr.top() + (sr.height() - r.height()) / 2);
 
     WordStudyItemModel *m = new WordStudyItemModel(s, this);

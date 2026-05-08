@@ -12,7 +12,6 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QSystemTrayIcon>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <QStringBuilder>
 #include <QTimer>
@@ -349,7 +348,7 @@ void ZKanjiForm::loadXMLSettings(QXmlStreamReader &reader)
             break;
         default:
         {
-            QStringRef statestr = reader.attributes().value("state");
+            QStringView statestr = reader.attributes().value("state");
             state = statestr == "minimized" ? Qt::WindowMinimized : statestr == "maximized" ? Qt::WindowMaximized : Qt::WindowNoState;
         }
         }
@@ -537,7 +536,7 @@ void ZKanjiForm::loadXMLSettings(QXmlStreamReader &reader)
             if (splitter == nullptr)
                 cw->layout()->addWidget(s);
 
-            QStringRef ori = reader.attributes().value("orientation");
+            QStringView ori = reader.attributes().value("orientation");
             bool vert = ori == "vert";
 
             int siz = reader.attributes().value("splitsize").toInt(&ok);
@@ -1324,7 +1323,7 @@ void ZKanjiForm::dictionaryAdded()
         return;
 
     int ix = ZKanji::dictionaryCount() - 1;
-    gUI->insertCommandAction(dictmap, dictmenu, ZKanji::dictionaryCount() - 1, ZKanji::dictionary(ix)->name(), ix < 9 ? QKeySequence(Qt::ALT + (Qt::Key_1 + ix)) : QKeySequence(), ix, true, dictgroup)->setIcon(ZKanji::dictionaryMenuFlag(ZKanji::dictionary(ix)->name()));
+    gUI->insertCommandAction(dictmap, dictmenu, ZKanji::dictionaryCount() - 1, ZKanji::dictionary(ix)->name(), ix < 9 ? QKeySequence(Qt::ALT | (Qt::Key_1 + ix)) : QKeySequence(), ix, true, dictgroup)->setIcon(ZKanji::dictionaryMenuFlag(ZKanji::dictionary(ix)->name()));
 }
 
 void ZKanjiForm::dictionaryRemoved(int /*index*/, int order, void * /*oldaddress*/)
@@ -1347,7 +1346,7 @@ void ZKanjiForm::dictionaryRemoved(int /*index*/, int order, void * /*oldaddress
         dictmap->removeMappings(a);
         dictmap->setMapping(a, dix);
         if (ix < 9)
-            a->setShortcut(QKeySequence(Qt::ALT + (Qt::Key_1 + ix)));
+            a->setShortcut(QKeySequence(Qt::ALT | (Qt::Key_1 + ix)));
         else
             a->setShortcut(QKeySequence());
     }
@@ -1373,7 +1372,7 @@ void ZKanjiForm::dictionaryMoved(int from, int to)
         dictmap->removeMappings(a);
         dictmap->setMapping(a, dix);
         if (ix < 9)
-            a->setShortcut(QKeySequence(Qt::ALT + (Qt::Key_1 + ix)));
+            a->setShortcut(QKeySequence(Qt::ALT | (Qt::Key_1 + ix)));
         else
             a->setShortcut(QKeySequence());
     }
@@ -1515,7 +1514,7 @@ void ZKanjiForm::fillMainMenu()
     for (int ix = 0, siz = ZKanji::dictionaryCount(); ix != siz; ++ix)
     {
         int dix = ZKanji::dictionaryPosition(ix);
-        gUI->addCommandAction(dictmap, dictmenu, ZKanji::dictionary(dix)->name(), ix < 9 ? QKeySequence(Qt::ALT + (Qt::Key_1 + ix)) : QKeySequence(), dix, true, dictgroup)->setIcon(ZKanji::dictionaryMenuFlag(ZKanji::dictionary(dix)->name()));
+        gUI->addCommandAction(dictmap, dictmenu, ZKanji::dictionary(dix)->name(), ix < 9 ? QKeySequence(Qt::ALT | (Qt::Key_1 + ix)) : QKeySequence(), dix, true, dictgroup)->setIcon(ZKanji::dictionaryMenuFlag(ZKanji::dictionary(dix)->name()));
     }
 
     dictmenu->addSeparator();

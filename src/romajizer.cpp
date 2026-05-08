@@ -113,7 +113,7 @@ const char* kanainput[] =
     "/"
 };
 
-const ushort kanaoutput[][3] =
+const char16_t kanaoutput[][3] =
 {
     { 0x3042, 0 }, /* a */
     { 0x3044, 0 }, /* i */
@@ -1027,7 +1027,7 @@ QChar hiraganaCh(const QChar *c, int ix)
     }
 
     if (KATAKANA(c[ix]))
-        return c[ix].unicode() - 0x60;
+        return QChar(c[ix].unicode() - 0x60);
 
     return c[ix];
 }
@@ -1037,17 +1037,17 @@ bool kanaMatch(const QChar *c1, int pos1, const QChar *c2, int pos2)
     if (hiraganaCh(c1, pos1) == hiraganaCh(c2, pos2))
         return true;
 
-    QChar hc1 = hiraganaCh(c1, pos1);
-    QChar hc2 = hiraganaCh(c2, pos2);
+    char16_t hc1 = hiraganaCh(c1, pos1).unicode();
+    char16_t hc2 = hiraganaCh(c2, pos2).unicode();
 
     if ((hc1 == 0x3072 /* HI */ && hc2 == 0x3044 /* I */) || (hc1 == 0x3075 /* FU */ && hc2 == 0x3046 /* U */) ||
         (hc1 == 0x3078 /* HE */ && hc2 == 0x3048 /* E */) || (hc1 == 0x306f /* HA */ && hc2 == 0x308f /* WA */) ||
         (hc1 == 0x3065 /* DZU */ && hc2 == 0x305A /* ZU */))
         return true;
 
-    if (((c1[pos1] == 0x30B1 /* KE */ || c1[pos1] == 0x30F6 /*XKE */ || c1[pos1] == 0x30F5 /* XKA */) &&
+    if (((c1[pos1] == QChar(0x30B1) /* KE */ || c1[pos1] == QChar(0x30F6) /*XKE */ || c1[pos1] == QChar(0x30F5) /* XKA */) &&
         (hc2 == 0x304B /* ka */ || hc2 == 0x3051 /*ke*/ || hc2 == 0x304C /* ga */)) ||
-        ((c2[pos2] == 0x30B1 /* KE */ || c2[pos2] == 0x30F6 /* XKE */ || c2[pos2] == 0x30F5 /* XKA */) &&
+        ((c2[pos2] == QChar(0x30B1) /* KE */ || c2[pos2] == QChar(0x30F6) /* XKE */ || c2[pos2] == QChar(0x30F5) /* XKA */) &&
         (hc1 == 0x304B /* ka */ || hc1 == 0x3051 /* ke */ || hc1 == 0x304C /* ga */)))
         return true;
 

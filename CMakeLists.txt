@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 project(zkanji LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+set(QT_NO_PRIVATE_MODULE_WARNING ON)
 
-find_package(Qt5 COMPONENTS Widgets Svg PrintSupport Network REQUIRED)
-if (UNIX)
-    find_package(Qt5 COMPONENTS X11Extras REQUIRED)
-endif()
+find_package(Qt6 COMPONENTS Widgets Svg PrintSupport Network REQUIRED)
+#if (UNIX)
+#    find_package(Qt5 COMPONENTS X11Extras REQUIRED)
+#endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -178,28 +179,17 @@ set(SOURCE_FILES
         src/ztreeview.cpp
         src/zui.cpp
         src/zwindow.cpp
-
-        src/Qxt/qxtglobal.cpp
-        src/Qxt/qxtglobalshortcut.cpp
         src/zabstractstatmodel.cpp
 
         Resources/resources.qrc
 )
 
-if (UNIX)
-    list(APPEND SOURCE_FILES src/Qxt/qxtglobalshortcut_x11.cpp)
-elseif (WIN32)
-    list(APPEND SOURCE_FILES src/Qxt/qxtglobalshortcut_win.cpp)
-elseif (MACOS)
-    list(APPEND SOURCE_FILES src/Qxt/qxtglobalshortcut_mac.cpp)
-endif()
-
 include_directories(src)
+add_subdirectory(src/Qxt)
 
 add_executable(zkanji ${SOURCE_FILES})
-target_link_libraries(zkanji PRIVATE Qt5::Widgets Qt5::Svg Qt5::PrintSupport Qt5::Network)
+target_link_libraries(zkanji PRIVATE Qt6::Widgets Qt6::Svg Qt6::PrintSupport Qt6::Network QxtGlobalShortcut)
 
 if (UNIX)
-    target_link_libraries(zkanji PRIVATE Qt5::X11Extras X11 xcb)
+    target_link_libraries(zkanji PRIVATE X11)
 endif()
-

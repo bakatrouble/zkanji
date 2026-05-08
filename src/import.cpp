@@ -13,6 +13,9 @@
 #include <set>
 
 #include "import.h"
+
+#include <qstringconverter_base.h>
+
 #include "ui_import.h"
 #include "treebuilder.h"
 #include "words.h"
@@ -102,7 +105,7 @@ ImportFileHandler::~ImportFileHandler()
     ownfile = true;
 }
 
-bool ImportFileHandler::open(QString fname, const char *codec)
+bool ImportFileHandler::open(QString fname, const QStringConverter::Encoding codec)
 {
     disableGuards();
 
@@ -124,15 +127,12 @@ bool ImportFileHandler::open(QString fname, const char *codec)
     fail = false;
 
     stream.setDevice(f);
-    if (codec == nullptr)
-        stream.setCodec("UTF-8");
-    else
-        stream.setCodec(codec);
+    stream.setEncoding(codec);
 
     return true;
 }
 
-void ImportFileHandler::setFile(QFile &file, const char *codec)
+void ImportFileHandler::setFile(QFile &file, const QStringConverter::Encoding codec)
 {
     if (f == &file)
         return;
@@ -148,10 +148,7 @@ void ImportFileHandler::setFile(QFile &file, const char *codec)
     fail = false;
 
     stream.setDevice(f);
-    if (codec == nullptr)
-        stream.setCodec("UTF-8");
-    else
-        stream.setCodec(codec);
+    stream.setEncoding(codec);
 }
 
 
@@ -751,7 +748,7 @@ bool DictImport::doImportExamples()
             trans = line.mid(tabpos + 1, idpos - tabpos - 1);
 
             bool ok = false;
-            QVector<QStringRef> lineids = line.midRef(idpos + 4).split('_');
+            QStringList lineids = line.mid(idpos + 4).split('_');
             if (lineids.size() == 2)
             {
                 // In the WWWJDIC format the Japanese id comes second. When switching to the
@@ -1255,7 +1252,7 @@ bool DictImport::letterAndNumber(const QString &str, QChar &ch, QChar &ch2, int 
         ch2 = QChar(0);
 
     bool ok = false;
-    num = str.rightRef(str.size() - start).toInt(&ok, base);
+    num = str.right(str.size() - start).toInt(&ok, base);
     return ok;
 }
 
@@ -1301,7 +1298,7 @@ bool DictImport::importKanjidic()
     if (!setInfoText(tr("Opening kanjidic...")))
         return false;
 
-    if (!file.open(path + "/kanjidic", "EUC-JP"))
+    if (!file.open(path + "/kanjidic"))  // , "EUC-JP"))
     {
         setErrorText(tr("Couldn't open file for reading."));
         return false;
@@ -1322,7 +1319,7 @@ bool DictImport::importKanjidic()
         return false;
     }
     QTextStream orderstream(&orderfile);
-    orderstream.setCodec("UTF-8");
+    orderstream.setEncoding(QStringConverter::Utf8);
     QString kanjiorder = orderstream.readAll().trimmed();
     if (kanjiorder.size() != ZKanji::kanjicount)
     {
@@ -3288,7 +3285,7 @@ bool DictImport::importRadFiles()
     }
     file.close();
 
-    file.setFile(f2, "EUC-JP");
+    file.setFile(f2);  // , "EUC-JP");
 
     //stream.setDevice(&f2);
     //stream.setCodec("EUC-JP");
@@ -3403,7 +3400,7 @@ bool DictImport::importRadFiles()
             }
 
             bool ok = false;
-            int val = parts.at(0).rightRef(parts.at(0).size() - 1).toInt(&ok);
+            int val = parts.at(0).right(parts.at(0).size() - 1).toInt(&ok);
 
             if (!ok || val < 1 || val > 214)
             {
@@ -3897,7 +3894,7 @@ bool DictImport::addKInf(QString str)
     if (!kcurrent || !str.endsWith(";</ke_inf>"))
         return false;
 
-    QStringRef s = str.midRef(9, str.size() - 9 - 10);
+    QStringView s = str.mid(9, str.size() - 9 - 10);
 
     if (s == "ateji")
         kcurrent->inf |= (1 << (int)WordInfo::Ateji);
@@ -3988,7 +3985,7 @@ bool DictImport::addRInf(QString str)
     if (!rcurrent || !str.endsWith(";</re_inf>"))
         return false;
 
-    QStringRef s = str.midRef(9, str.size() - 9 - 10);
+    QStringView s = str.mid(9, str.size() - 9 - 10);
 
     if (s == "ateji")
         rcurrent->inf |= (1 << (int)WordInfo::Ateji);
@@ -4072,7 +4069,7 @@ bool DictImport::addSPos(QString str)
 {
     if (!scurrent || !str.endsWith(";</pos>"))
         return false;
-    QStringRef s = str.midRef(6, str.size() - 6 - 7);
+    QStringView s = str.mid(6, str.size() - 6 - 7);
 
     if (s == "adj-f")
         scurrent->attrib.types |= (1 << (int)WordTypes::PrenounAdj);
@@ -4126,13 +4123,13 @@ bool DictImport::addSPos(QString str)
         scurrent->attrib.types |= (1 << (int)WordTypes::Suffix);
     else if (s == "v1" || s == "v1-s")
         scurrent->attrib.types |= (1 << (int)WordTypes::IchidanVerb);
-    else if (s == "v2a-s" || (s.size() == 5 && s.startsWith("v2") && (s.endsWith("-k") || s.endsWith("-s"))))
+    else if (s == "v2a-s" || (s.size() == 5 && s.startsWith(QString("v2")) && (s.endsWith(QString("-k")) || s.endsWith(QString("-s")))))
     {
         //scurrent->attrib.types |= (1 << (int)WordTypes::NidanVerb);
         scurrent->attrib.types |= (1 << (int)WordTypes::ArchaicVerb);
         scurrent->attrib.notes |= (1 << (int)WordNotes::Archaic);
     }
-    else if (s.size() == 3 && s.startsWith("v4"))
+    else if (s.size() == 3 && s.startsWith(QString("v4")))
     {
         //scurrent->attrib.types |= (1 << (int)WordTypes::YodanVerb);
         scurrent->attrib.types |= (1 << (int)WordTypes::ArchaicVerb);
@@ -4140,7 +4137,7 @@ bool DictImport::addSPos(QString str)
     }
     else if (s == "v5aru")
         scurrent->attrib.types |= (1 << (int)WordTypes::AruVerb);
-    else if ((s.size() == 3 && s.startsWith("v5")) || s == "v5r-i" || s == "v5u-s" || s == "vn")
+    else if ((s.size() == 3 && s.startsWith(QString("v5"))) || s == "v5r-i" || s == "v5u-s" || s == "vn")
         scurrent->attrib.types |= (1 << (int)WordTypes::GodanVerb);
     else if (s == "v5k-s")
         scurrent->attrib.types |= (1 << (int)WordTypes::IkuVerb);
@@ -4170,7 +4167,7 @@ bool DictImport::addSField(QString str)
     if (!scurrent || !str.endsWith(";</field>"))
         return false;
 
-    QStringRef s = str.midRef(8, str.size() - 8 - 9);
+    QStringView s = str.mid(8, str.size() - 8 - 9);
 
     if (s == "Buddh")
         scurrent->attrib.fields |= (1 << (int)WordFields::Buddhism);
@@ -4240,7 +4237,7 @@ bool DictImport::addSMisc(QString str)
 {
     if (!scurrent || !str.endsWith(";</misc>"))
         return false;
-    QStringRef s = str.midRef(7, str.size() - 7 - 8);
+    QStringView s = str.mid(7, str.size() - 7 - 8);
 
     if (s == "abbr")
         scurrent->attrib.notes |= (1 << (int)WordNotes::Abbrev);
@@ -4316,7 +4313,7 @@ bool DictImport::addSDial(QString str)
 {
     if (!scurrent || !str.endsWith(";</dial>"))
         return false;
-    QStringRef s = str.midRef(7, str.size() - 7 - 8);
+    QStringView s = str.mid(7, str.size() - 7 - 8);
 
     if (s == "kyb")
         scurrent->attrib.dialects |= (1 << (int)WordDialects::KyotoBen);

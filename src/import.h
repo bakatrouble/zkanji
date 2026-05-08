@@ -141,13 +141,13 @@ public:
     // Opens the file with the passed name and format (if codec is set). Returns false on
     // error. Calling error() to check whether an error occurred is valid after this call.
     // By default the codec is UTF-8.
-    bool open(QString fname, const char *codec = nullptr);
+    bool open(QString fname, const QStringConverter::Encoding codec = QStringConverter::Utf8);
 
     // Sets an already open file to be used for reading. The file must be opened with Read and
     // Text modes. To use the inner file again, use open().
     // Warning: the file won't be closed when the ImportFileHandler is destroyed or a new file
     // is opened or set. Call close() either on this object or on the passed file.
-    void setFile(QFile &file, const char *codec = nullptr);
+    void setFile(QFile &file, const QStringConverter::Encoding codec = QStringConverter::Utf8);
 
     // Closes the file if it's open, resetting the object. Call open() afterwards in case the
     // file object should be used again.

@@ -9,6 +9,7 @@
 
 #include <QDataStream>
 #include <memory>
+#include <map>
 
 class WordGroup;
 

@@ -129,12 +129,12 @@ void ZListView::loadXMLSettings(QXmlStreamReader &reader)
         return;
     }
 
-    QStringRef colstr = reader.attributes().value("columns");
-    QStringRef sizstr = reader.attributes().value("sizes");
+    QStringView colstr = reader.attributes().value("columns");
+    QStringView sizstr = reader.attributes().value("sizes");
     if (!colstr.isEmpty() && !sizstr.isEmpty())
     {
-        QVector<QStringRef> cols = colstr.split(",");
-        QVector<QStringRef> sizes = sizstr.split(",");
+        QVector<QStringView> cols = colstr.split(QChar(','));
+        QVector<QStringView> sizes = sizstr.split(QChar(','));
 
         if (cols.size() == sizes.size())
         {
@@ -165,8 +165,8 @@ void ZListView::loadXMLSettings(QXmlStreamReader &reader)
     }
 
 
-    //QStringRef hidstr = reader.attributes().value("hidden");
-    //QVector<QStringRef> hids = colstr.split(",");
+    //QStringView hidstr = reader.attributes().value("hidden");
+    //QVector<QStringView> hids = colstr.split(",");
 
     //std::vector<int> hidden;
     //hidden.reserve(hids.size());
@@ -2322,7 +2322,7 @@ void ZListView::doResizeColumns()
     int cc = m->columnCount();
 
     QStyleOptionViewItem measureoption;
-    measureoption.init(this);
+    measureoption.initFrom(this);
 
     // Width of all the stretchable columns before stretching.
     int stretchsiz = 0;

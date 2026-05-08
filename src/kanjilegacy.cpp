@@ -51,7 +51,7 @@ void KanjiRadicalList::loadLegacy(QDataStream &stream, int version)
 
         std::unique_ptr<QChar[]> names(new QChar[u16 + 1]);
         stream.readRawData((char*)names.get(), u16 * sizeof(QChar));
-        names.get()[u16] = 0;
+        names.get()[u16] = QChar(0);
 
         // Count names.
         int namecnt = 1;

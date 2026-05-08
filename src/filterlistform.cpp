@@ -5,7 +5,6 @@
 **/
 
 #include <QMessageBox>
-#include <QDesktopWidget>
 #include <QPainter>
 #include <QPushButton>
 #include <QScreen>

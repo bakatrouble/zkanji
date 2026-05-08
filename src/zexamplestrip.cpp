@@ -6,7 +6,6 @@
 
 #include <QtEvents>
 #include <QPainter>
-#include <QDesktopWidget>
 #include <QApplication>
 
 #include "zexamplestrip.h"
@@ -113,7 +112,7 @@ void ZExamplePopup::popup(Dictionary *d, const fastarray<ExampleWordsData::Form,
     setMinimumSize(r.size());
     setMaximumSize(r.size());
 
-    QRect dr = qApp->desktop()->availableGeometry(owner);
+    QRect dr = owner->screen()->availableGeometry();
 
     side = Bottom | Left;
     int left = wordrect.left();
@@ -249,7 +248,7 @@ void ZExamplePopup::paintEvent(QPaintEvent * /*e*/)
     }
 }
 
-void ZExamplePopup::enterEvent(QEvent * /*e*/)
+void ZExamplePopup::enterEvent(QEnterEvent * /*e*/)
 {
     waittimer.stop();
 }

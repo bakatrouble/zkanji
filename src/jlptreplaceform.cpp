@@ -190,7 +190,7 @@ void JLPTReplaceForm::saveJLPTData()
     }
 
     QTextStream stream(&f);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
 
     stream << "# JLPT N Data file for zkanji.\n"
             "#\n"

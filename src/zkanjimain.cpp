@@ -383,7 +383,7 @@ QDataStream& operator>>(QDataStream& stream, ZStr<QChar*> str)
     if (((int)str.format & (int)ZStrFormat::AddNull) == (int)ZStrFormat::AddNull)
     {
         str.val = new QChar[len + 1];
-        str.val[len] = 0;
+        str.val[len] = QChar(0);
     }
     else
         str.val = new QChar[len];
@@ -419,8 +419,8 @@ QDataStream& operator<<(QDataStream& stream, const ZStr<const QString> &str)
         data = str.val.toUtf8();
     else
     {
-        int len = std::min(str.length, str.val.size());
-        data = str.val.leftRef(len).toUtf8();
+        const int len = std::min(str.length, static_cast<int>(str.val.size()));
+        data = str.val.left(len).toUtf8();
         if (len < str.length)
         {
             std::vector<char> vec(str.length - len, ' ');
@@ -480,8 +480,8 @@ QDataStream& operator<<(QDataStream& stream, const ZStr<QString> &str)
         data = str.val.toUtf8();
     else
     {
-        int len = std::min(str.length, str.val.size());
-        data = str.val.leftRef(len).toUtf8();
+        int len = std::min(str.length, static_cast<int>(str.val.size()));
+        data = str.val.left(len).toUtf8();
         if (len < str.length)
         {
             std::vector<char> vec(str.length - len, ' ');
@@ -841,7 +841,7 @@ bool findStrIntMinMax(QString str, int minval, int maxval, int &minresult, int &
         }
         else
         {
-            val = str.leftRef(dash).toInt(&success);
+            val = str.left(dash).toInt(&success);
 
             if (success)
                 minresult = clamp(val, minval, maxval);
@@ -851,7 +851,7 @@ bool findStrIntMinMax(QString str, int minval, int maxval, int &minresult, int &
             maxresult = maxval + 1;
         else if (success)
         {
-            val2 = str.rightRef(str.size() - dash - 1).toInt(&success);
+            val2 = str.right(str.size() - dash - 1).toInt(&success);
             if (success)
                 maxresult = clamp(val2, minresult, maxval);
         }

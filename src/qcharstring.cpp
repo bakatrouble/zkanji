@@ -121,7 +121,7 @@ QCharKind qcharisspace(QChar ch)
     return QCharKind::Normal;
 }
 
-const QChar* qcharchr(const QChar *str, QChar ch, int length)
+const QChar* qcharchr(const QChar *str, char16_t ch, int length)
 {
     if (length == -1)
     {
@@ -813,7 +813,7 @@ int QCharString::find(QChar ch) const
     if (arr == nullptr)
         return -1;
 
-    const QChar *pos = qcharchr(arr, ch);
+    const QChar *pos = qcharchr(arr, ch.unicode());
     if (pos == nullptr)
         return -1;
     return pos - arr;
@@ -891,24 +891,24 @@ bool operator!=(const QCharString &a, const QString &b)
     return operator!=<QString>(a, b);
 }
 
-bool operator==(const QStringRef &a, const QCharString &b)
+bool operator==(const QStringView &a, const QCharString &b)
 {
-    return operator==<QStringRef>(a, b);
+    return operator==<QStringView>(a, b);
 }
 
-bool operator!=(const QStringRef &a, const QCharString &b)
+bool operator!=(const QStringView &a, const QCharString &b)
 {
-    return operator!=<QStringRef>(a, b);
+    return operator!=<QStringView>(a, b);
 }
 
-bool operator==(const QCharString &a, const QStringRef &b)
+bool operator==(const QCharString &a, const QStringView &b)
 {
-    return operator==<QStringRef>(a, b);
+    return operator==<QStringView>(a, b);
 }
 
-bool operator!=(const QCharString &a, const QStringRef &b)
+bool operator!=(const QCharString &a, const QStringView &b)
 {
-    return operator!=<QStringRef>(a, b);
+    return operator!=<QStringView>(a, b);
 }
 
 bool operator==(const QChar *a, const QCharString &b)

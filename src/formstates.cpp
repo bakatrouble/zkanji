@@ -9,7 +9,6 @@
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QStringBuilder>
-#include <QDesktopWidget>
 #include <QScreen>
 
 #include "formstates.h"
@@ -333,7 +332,7 @@ namespace FormStates
 
     void loadXMLSettings(DictionaryWidgetData &data, QXmlStreamReader &reader)
     {
-        QStringRef modestr = reader.attributes().value("mode");
+        QStringView modestr = reader.attributes().value("mode");
         if (modestr == "browse")
             data.mode = SearchMode::Browse;
         else if (modestr == "from")
@@ -351,7 +350,7 @@ namespace FormStates
             if (reader.name() == "Examples")
             {
                 data.showex = reader.attributes().value("show") == True;
-                QStringRef ref = reader.attributes().value("mode");
+                QStringView ref = reader.attributes().value("mode");
                 if (ref == "both")
                     data.exmode = ExampleDisplay::Both;
                 else if (ref == "to")
@@ -383,7 +382,7 @@ namespace FormStates
                 const QString Exclude = QStringLiteral("exclude");
                 const QString Ignore = QStringLiteral("0");
 
-                QStringRef ref = reader.attributes().value("inexample");
+                QStringView ref = reader.attributes().value("inexample");
                 if (ref == Include)
                     data.conditionex = Inclusion::Include;
                 else if (ref == Exclude)
@@ -404,7 +403,7 @@ namespace FormStates
                 {
                     if (reader.name() == "Include" || reader.name() == "Exclude")
                     {
-                        QStringRef namestr = reader.attributes().value("name");
+                        QStringView namestr = reader.attributes().value("name");
                         int ix = ZKanji::wordfilters().itemIndex(namestr);
                         if (ix != -1)
                             data.conditions.push_back(std::make_pair(namestr.toString(), reader.name() == "Include" ? Inclusion::Include : Inclusion::Exclude));
@@ -459,8 +458,8 @@ namespace FormStates
     {
         data.columns.clear();
 
-        QVector<QStringRef> cols = reader.attributes().value("columns").split(",");
-        QVector<QStringRef> wids = reader.attributes().value("widths").split(",");
+        QVector<QStringView> cols = reader.attributes().value("columns").split(',');
+        QVector<QStringView> wids = reader.attributes().value("widths").split(',');
 
         if (cols.isEmpty() || cols.size() != wids.size())
             return;
@@ -784,7 +783,7 @@ namespace FormStates
         data.showkana = reader.attributes().value("kana") != False;
         data.showdef = reader.attributes().value("definition") != False;
 
-        QStringRef modestr = reader.attributes().value("mode");
+        QStringView modestr = reader.attributes().value("mode");
         data.mode = modestr == "study" ? DeckItemViewModes::Studied : modestr == "tested" ? DeckItemViewModes::Tested : DeckItemViewModes::Queued;
 
         while (reader.readNextStartElement())
@@ -795,7 +794,7 @@ namespace FormStates
             {
                 while (reader.readNextStartElement())
                 {
-                    QStringRef elemname = reader.name();
+                    QStringView elemname = reader.name();
                     if (elemname == "Queue" || elemname == "Study" || elemname == "LastTest")
                     {
                         WordStudyListFormDataItems::SortData &sort = elemname == "Queue" ? data.queuesort : elemname == "Study" ? data.studysort : data.testedsort;
@@ -816,13 +815,13 @@ namespace FormStates
             {
                 while (reader.readNextStartElement())
                 {
-                    QStringRef elemname = reader.name();
+                    QStringView elemname = reader.name();
                     if (elemname == "Queue" || elemname == "Study" || elemname == "LastTest")
                     {
                         std::vector<int> &colsizes = elemname == "Queue" ? data.queuesizes : elemname == "Study" ? data.studysizes : data.testedsizes;
                         std::vector<char> &cols = elemname == "Queue" ? data.queuecols : elemname == "Study" ? data.studycols : data.testedcols;
 
-                        QVector<QStringRef> refs = reader.attributes().value("sizes").split(',');
+                        QVector<QStringView> refs = reader.attributes().value("sizes").split(',');
                         colsizes.clear();
                         colsizes.resize((elemname == "Queue" ? StudyListModel::queueColCount() : elemname == "Study" ? StudyListModel::studiedColCount() : StudyListModel::testedColCount()) - 1, -1);
                         for (int ix = 0, siz = std::min<int>(refs.size(), tosigned(colsizes.size())); ix != siz; ++ix)
@@ -865,7 +864,7 @@ namespace FormStates
 
     void loadXMLSettings(WordStudyListFormDataStats &data, QXmlStreamReader &reader)
     {
-        QStringRef str = reader.attributes().value("page");
+        QStringView str = reader.attributes().value("page");
         data.page = str == "items" ? DeckStatPages::Items : str == "forecast" ? DeckStatPages::Forecast : str == "levels" ? DeckStatPages::Levels : DeckStatPages::Tests;
         str = reader.attributes().value("itemsinterval");
         data.itemsinterval = str == "year" ? DeckStatIntervals::Year : str == "halfyear" ? DeckStatIntervals::HalfYear : str == "month" ? DeckStatIntervals::Month : DeckStatIntervals::All;

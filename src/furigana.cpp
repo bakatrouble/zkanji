@@ -88,8 +88,8 @@ bool furiganaStep(const QCharString &kanji, const QCharString &kana, int &kanjis
 
         QChar ch = hiraganaCh(kana.data(), kanastart);
 
-        if (ch == 0x3083 /* small ya */ || ch == 0x3085 /* small yu */ || ch == 0x3087 /* small yo */ ||
-            ch == 0x3041 /* small a */ || ch == 0x3043 /* small i */ || ch == 0x3045 /* small u */ || ch == 0x3047 /* small e */ || ch == 0x3049 /* small o */)
+        if (ch == QChar(0x3083) /* small ya */ || ch == QChar(0x3085) /* small yu */ || ch == QChar(0x3087) /* small yo */ ||
+            ch == QChar(0x3041) /* small a */ || ch == QChar(0x3043) /* small i */ || ch == QChar(0x3045) /* small u */ || ch == QChar(0x3047) /* small e */ || ch == QChar(0x3049) /* small o */)
             return false;
     }
 
@@ -107,18 +107,18 @@ bool furiganaStep(const QCharString &kanji, const QCharString &kana, int &kanjis
             kanjistart++, kanastart++, ix++, changed = true;
 
         // Word has a full width 0 character in front but no zero kana found. Skip the number.
-        while (kanjistart <= kanjiend && kanastart <= kanaend && kanji[kanjistart] == 0xFF10 /* fullwidth zero */ &&
+        while (kanjistart <= kanjiend && kanastart <= kanaend && kanji[kanjistart] == QChar(0xFF10) /* fullwidth zero */ &&
             (kanjistart == 0 || kanji[kanjistart - 1].unicode() < 0xFF10 || kanji[kanjistart - 1].unicode() > 0xFF19) &&
-            (kanastart == kanaend || hiraganaCh(kana.data(), kanastart) != 0x305c /*hiragana ze*/ ||
-            (kanastart < kanaend && hiraganaCh(kana.data(), kanastart + 1) != 0x308D /* hiragana ro */)))
+            (kanastart == kanaend || hiraganaCh(kana.data(), kanastart) != QChar(0x305c) /*hiragana ze*/ ||
+            (kanastart < kanaend && hiraganaCh(kana.data(), kanastart + 1) != QChar(0x308D) /* hiragana ro */)))
             kanjistart++, ix++, changed = true;
 
         // Remove any dot punctuation in the middle of the word
         while (kanjistart <= kanjiend && kanastart <= kanaend &&
-            (kanji[kanjistart] == 0x30fb /* kana mid-dot*/ ||
-            kanji[kanjistart] == 0xff1d /* fullwidth equal sign*/ ||
-            kanji[kanjistart] == 0xff0e /* fullwidth stop */ ||
-            kanji[kanjistart] == 0xff0f /* fullwidth / */))
+            (kanji[kanjistart] == QChar(0x30fb) /* kana mid-dot*/ ||
+            kanji[kanjistart] == QChar(0xff1d) /* fullwidth equal sign*/ ||
+            kanji[kanjistart] == QChar(0xff0e) /* fullwidth stop */ ||
+            kanji[kanjistart] == QChar(0xff0f) /* fullwidth / */))
             kanjistart++, ix++, changed = true;
     }
 
@@ -348,30 +348,30 @@ int fuReading(const QChar *reading, int readinglen, const QChar *kana, int kanas
 
         if (!changedlen && ix == readinglen - 1 && readinglen != 1)
         {
-            if (kch == 0x3063 /* minitsu */)
+            if (kch == QChar(0x3063) /* minitsu */)
             {
-                if (och == 0x3061 /* chi */)
+                if (och == QChar(0x3061) /* chi */)
                 {
                     val += 2;
                     continue;
                 }
-                if (och == 0x3064 /* tsu */)
+                if (och == QChar(0x3064) /* tsu */)
                 {
                     val += 1;
                     continue;
                 }
             }
-            if (och == 0x3064 /* tsu */ && kch == 0x3061 /* chi */)
+            if (och == QChar(0x3064) /* tsu */ && kch == QChar(0x3061) /* chi */)
             {
                 val += 2;
                 continue;
             }
-            if (och == 0x3061 /* chi */ && kch == 0x3058 /* ji */)
+            if (och == QChar(0x3061) /* chi */ && kch == QChar(0x3058) /* ji */)
             {
                 val += 2;
                 continue;
             }
-            if (och == 0x305F /* ta */ && kch == 0x3060 /* da */)
+            if (och == QChar(0x305F) /* ta */ && kch == QChar(0x3060) /* da */)
             {
                 val += 1;
                 continue;
@@ -380,7 +380,7 @@ int fuReading(const QChar *reading, int readinglen, const QChar *kana, int kanas
 
         if (ix == 0 && !recurse)
         {
-            if ((och == 0x3061 /* chi */ && kch == 0x3058 /* ji */) || (och == 0x3064 /* tsu */ && kch == 0x305A /* zu */))
+            if ((och == QChar(0x3061) /* chi */ && kch == QChar(0x3058) /* ji */) || (och == QChar(0x3064) /* tsu */ && kch == QChar(0x305A) /* zu */))
             {
                 val += 2;
                 continue;
@@ -397,15 +397,15 @@ int fuReading(const QChar *reading, int readinglen, const QChar *kana, int kanas
             }
         }
 
-        if ((och == 0x30F6 /* miniKE */ && kch == 0x304B /* ka */) || (och == 0x30F5 /* miniKA */ && kch == 0x304B /* ka */) ||
-            (och == 0x3088 /* yo */ && kch == 0x3087 /* miniyo */) || (och == 0x3086 /* yu */ && kch == 0x3085 /* miniyu */) || (och == 0x3084 /* ya */ && kch == 0x3083 /* miniya */) || //h row matches
-            (och == 0x3042 /* a */ && kch == 0x308F /* wa */))
+        if ((och == QChar(0x30F6) /* miniKE */ && kch == QChar(0x304B) /* ka */) || (och == QChar(0x30F5) /* miniKA */ && kch == QChar(0x304B) /* ka */) ||
+            (och == QChar(0x3088) /* yo */ && kch == QChar(0x3087) /* miniyo */) || (och == QChar(0x3086) /* yu */ && kch == QChar(0x3085) /* miniyu */) || (och == QChar(0x3084) /* ya */ && kch == QChar(0x3083) /* miniya */) || //h row matches
+            (och == QChar(0x3042) /* a */ && kch == QChar(0x308F) /* wa */))
         {
             ++val;
             continue;
         }
 
-        if (kanastart + ix + 1 <= kanaend && (!changedlen && ix == readinglen - 1 && readinglen != 1) && kch == 0x3063 /* minitsu */ && och.unicode() - 0x3041 >= 0 && och.unicode() - 0x3041 < 84)
+        if (kanastart + ix + 1 <= kanaend && (!changedlen && ix == readinglen - 1 && readinglen != 1) && kch == QChar(0x3063) /* minitsu */ && och.unicode() - 0x3041 >= 0 && och.unicode() - 0x3041 < 84)
         {
             kch2 = hiraganaCh(kana, kanastart + ix + 1);
             if (kch2.unicode() - 0x3041 >= 0 && kch2.unicode() - 0x3041 < 84 && consonantcolumn[och.unicode() - 0x3041] == consonantcolumn[kch2.unicode() - 0x3041] && consonantcolumn[och.unicode() - 0x3041] > 0)
@@ -638,7 +638,7 @@ bool furiganaStep2(const QCharString &kanji, const QCharString &kana, int &kanji
 
         for (int ix = 0, siz = tosigned(k->kun.size()); ix != siz; ++ix)
         {
-            const QChar *c = qcharchr(k->kun[ix].data(), QChar('.'));
+            const QChar *c = qcharchr(k->kun[ix].data(), '.');
             if (c == nullptr || c[1].unicode() == 0)
                 continue;
 
@@ -650,15 +650,15 @@ bool furiganaStep2(const QCharString &kanji, const QCharString &kana, int &kanji
                 // converted into a fake masu base form of a verb.
 
                 QChar ch = hiraganaCh(c + 1, 0);
-                QChar newch = 0;
+                QChar newch = QChar(0);
 
                 QCharString masureading;
-                if (ch == 0x3046 /* kana u */ || ch == 0x304f /* kana ku */ || ch == 0x3059 /* kana su */ || ch == 0x305a /* kana zu */)
+                if (ch == QChar(0x3046) /* kana u */ || ch == QChar(0x304f) /* kana ku */ || ch == QChar(0x3059) /* kana su */ || ch == QChar(0x305a) /* kana zu */)
                     newch = QChar(ch.unicode() - 2);
-                if (ch == 0x3064 /* kana tsu */ || ch == 0x3065 /* kana dzu */ || ch == 0x3075 /* kana fu */ ||
-                    ch == 0x3076 /* kana bu */ || ch == 0x3077 /* kana pu */)
+                if (ch == QChar(0x3064) /* kana tsu */ || ch == QChar(0x3065) /* kana dzu */ || ch == QChar(0x3075) /* kana fu */ ||
+                    ch == QChar(0x3076) /* kana bu */ || ch == QChar(0x3077) /* kana pu */)
                     newch = QChar(ch.unicode() - 3);
-                if (ch == 0x306c /* kana nu */ || ch == 0x3080 /* kana mu */ || ch == 0x308b /* kana ru */)
+                if (ch == QChar(0x306c) /* kana nu */ || ch == QChar(0x3080) /* kana mu */ || ch == QChar(0x308b) /* kana ru */)
                     newch = QChar(ch.unicode() - 1);
 
                 if (newch.unicode() != 0)
@@ -679,15 +679,15 @@ bool furiganaStep2(const QCharString &kanji, const QCharString &kana, int &kanji
                 int clen = tosigned(qcharlen(c + 1));
 
                 QChar ch = hiraganaCh(c + clen, 0);
-                QChar newch = 0;
+                QChar newch = QChar(0);
                 QCharString masureading;
 
-                if (ch == 0x3046 /* kana u */ || ch == 0x304f /* kana ku */ || ch == 0x3059 /* kana su */ || ch == 0x305a /* kana zu */)
+                if (ch == QChar(0x3046) /* kana u */ || ch == QChar(0x304f) /* kana ku */ || ch == QChar(0x3059) /* kana su */ || ch == QChar(0x305a) /* kana zu */)
                     newch = QChar(ch.unicode() - 2);
-                if (ch == 0x3064 /* kana tsu */ || ch == 0x3065 /* kana dzu */ || ch == 0x3075 /* kana fu */ ||
-                    ch == 0x3076 /* kana bu */ || ch == 0x3077 /* kana pu */)
+                if (ch == QChar(0x3064) /* kana tsu */ || ch == QChar(0x3065) /* kana dzu */ || ch == QChar(0x3075) /* kana fu */ ||
+                    ch == QChar(0x3076) /* kana bu */ || ch == QChar(0x3077) /* kana pu */)
                     newch = QChar(ch.unicode() - 3);
-                if (ch == 0x306c /* kana nu */ || ch == 0x3080 /* kana mu */ || ch == 0x308b /* kana ru */)
+                if (ch == QChar(0x306c) /* kana nu */ || ch == QChar(0x3080) /* kana mu */ || ch == QChar(0x308b) /* kana ru */)
                     newch = QChar(ch.unicode() - 1);
 
                 if (newch.unicode() != 0)
@@ -703,7 +703,7 @@ bool furiganaStep2(const QCharString &kanji, const QCharString &kana, int &kanji
 
                     // Verbs ending in -ru can be converted to masu base by simply cutting off
                     // that trailing character.
-                    if (ch == 0x308b /* kana ru */)
+                    if (ch == QChar(0x308b) /* kana ru */)
                     {
                         if (!masureading.empty() && l.count(dotpos + clen - 1) == 0 && l2.count(dotpos + clen - 1) == 0 && fuReading(masureading.data(), dotpos + clen - 1, kana.data(), kanastart, kanaend))
                             l2.insert(dotpos + clen - 1);
@@ -806,9 +806,9 @@ bool furiganaStep2(const QCharString &kanji, const QCharString &kana, int &kanji
             // The leading kana of the current part might have changed sound due to its
             // position. Depending on the kana, a neighboring unicode position contains
             // the original kana.
-            if ((ch > 0x304b && ch <= 0x3062 && (ch.unicode() % 2) == 0) || (ch > 0x3064 && ch <= 0x3069 && (ch.unicode() % 2) != 0))
+            if ((ch > QChar(0x304b) && ch <= QChar(0x3062) && (ch.unicode() % 2) == 0) || (ch > QChar(0x3064) && ch <= QChar(0x3069) && (ch.unicode() % 2) != 0))
                 kanacateg = 1;
-            else if (ch > 0x306f && ch <= 0x307d && (ch.unicode() % 3) != 0)
+            else if (ch > QChar(0x306f) && ch <= QChar(0x307d) && (ch.unicode() % 3) != 0)
                 kanacateg = 2;
 
             QChar kch = hiraganaCh(kana.data(), kanastart);
@@ -1622,12 +1622,12 @@ void testFuriganaReadingTest()
     QFile f("d:/allfurigana.txt");
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream(&f);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
 
     QFile f2("d:/nofurigana.txt");
     f2.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream stream2(&f2);
-    stream2.setCodec("UTF-8");
+    stream2.setEncoding(QStringConverter::Utf8);
 #endif
 
     Dictionary *d;

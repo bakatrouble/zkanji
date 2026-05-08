@@ -150,7 +150,7 @@ public:
     // Returns the index of the filter with the passed name or -1 if the filter is not found.
     int itemIndex(const QString &name);
     // Returns the index of the filter with the passed name or -1 if the filter is not found.
-    int itemIndex(const QStringRef &name);
+    int itemIndex(const QStringView &name);
     // Destroys a filter, removing it from the list and emiting filterErased.
     void erase(int index);
     // Updates the position of a filter at index, moving it in front of the to filter. If the

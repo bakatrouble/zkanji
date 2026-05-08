@@ -83,7 +83,7 @@ ExampleWidget::~ExampleWidget()
 //
 //void ExampleWidget::loadXMLSettings(QXmlStreamReader &reader)
 //{
-//    QStringRef ref = reader.attributes().value("mode");
+//    QStringView ref = reader.attributes().value("mode");
 //    if (ref == "both")
 //        ui->strip->setDisplayed(ExampleDisplay::Both);
 //    else if (ref == "from")

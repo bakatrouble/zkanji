@@ -492,7 +492,7 @@ namespace FormStates
                 bool finished = false;
                 if (Settings::kanji.savefilters)
                 {
-                    QStringRef val = reader.attributes().value("mode");
+                    QStringView val = reader.attributes().value("mode");
                     if (val == "parts")
                         data.rads.mode = RadicalFilterModes::Parts;
                     else if (val == "radicals")
@@ -511,12 +511,12 @@ namespace FormStates
                             data.rads.groups.push_back(std::vector<ushort>());
                             std::vector<ushort> &list = data.rads.groups.back();
 
-                            QVector<QStringRef> vals = reader.attributes().value("values").split(",");
+                            QVector<QStringView> vals = reader.attributes().value("values").split(',');
                             list.reserve(vals.size());
 
                             bool ok = false;
                             int num;
-                            for (const QStringRef &ref : vals)
+                            for (const QStringView &ref : vals)
                             {
                                 num = ref.toInt(&ok);
                                 if (ok)
@@ -637,7 +637,7 @@ KanjiSearchWidget::KanjiSearchWidget(QWidget *parent) : base(parent), ui(new Ui:
     for (int ix = 0, siz = tosigned(m.size()); ix != siz; ++ix)
         ui->radicalsCButton->addItem(m.filterText(ix));
 
-    connect(&filterMap, SIGNAL(mapped(int)), this, SLOT(showHideAction(int)));
+    connect(&filterMap, SIGNAL(mappedInt(int)), this, SLOT(showHideAction(int)));
 
     if (dynamic_cast<ZKanjiForm*>(window()) != nullptr || dynamic_cast<PopupKanjiSearch*>(window()) != nullptr)
         ui->kanjiGrid->assignStatusBar(ui->kanjiStatus);

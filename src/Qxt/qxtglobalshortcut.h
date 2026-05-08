@@ -1,6 +1,7 @@
-#ifndef QXTGLOBALSHORTCUT_H
+// Copyright (C) Oleg Shparber, et al. <https://zealdocs.org>
+// SPDX-License-Identifier: GPL-3.0-or-later
 /****************************************************************************
-** Copyright (c) 2006 - 2011, the LibQxt project.
+// Copyright (C) 2006 - 2011, the LibQxt project.
 ** See the Qxt AUTHORS file for a list of authors and copyright holders.
 ** All rights reserved.
 **
@@ -29,35 +30,40 @@
 ** <http://libqxt.org>  <foundation@libqxt.org>
 *****************************************************************************/
 
+#ifndef QXTGLOBALSHORTCUT_H
 #define QXTGLOBALSHORTCUT_H
 
-#include "qxtglobal.h"
-#include <QObject>
 #include <QKeySequence>
+#include <QObject>
+
 class QxtGlobalShortcutPrivate;
 
-class QXT_GUI_EXPORT QxtGlobalShortcut : public QObject
+class QxtGlobalShortcut : public QObject
 {
     Q_OBJECT
-    QXT_DECLARE_PRIVATE(QxtGlobalShortcut)
+    Q_DISABLE_COPY_MOVE(QxtGlobalShortcut)
+
+    QxtGlobalShortcutPrivate *d_ptr = nullptr;
+    Q_DECLARE_PRIVATE(QxtGlobalShortcut)
+
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled)
     Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
-
 public:
-    explicit QxtGlobalShortcut(QObject* parent = 0);
-    explicit QxtGlobalShortcut(const QKeySequence& shortcut, QObject* parent = 0);
-    virtual ~QxtGlobalShortcut();
+    explicit QxtGlobalShortcut(QObject *parent = nullptr);
+    explicit QxtGlobalShortcut(const QKeySequence &shortcut, QObject *parent = nullptr);
+    ~QxtGlobalShortcut() override;
 
     QKeySequence shortcut() const;
-    bool setShortcut(const QKeySequence& shortcut);
+    bool setShortcut(const QKeySequence &shortcut);
 
     bool isEnabled() const;
 
-public Q_SLOTS:
-    void setEnabled(bool enabled = true);
-    void setDisabled(bool disabled = true);
+    static bool isSupported();
 
-Q_SIGNALS:
+public slots:
+    void setEnabled(bool enabled);
+
+signals:
     void activated();
 };
 

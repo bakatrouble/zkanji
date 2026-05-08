@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QStringBuilder>
 #include <QDir>
+#include <QString>
 
 #define TIMED_LOAD 0
 #if TIMED_LOAD == 1
@@ -421,7 +422,7 @@ namespace ZKanji
             if (!dt.isValid())
                 invalid = true;
 
-            dt.setTimeSpec(Qt::UTC);
+            dt.setTimeZone(QTimeZone::UTC);
 
             if (invalid || dt.daysTo(now) < 0)
             {
@@ -629,7 +630,7 @@ void WordAttributeFilterList::loadXMLSettings(QXmlStreamReader &reader)
             continue;
         }
 
-        QStringRef typeref = reader.attributes().value("type");
+        QStringView typeref = reader.attributes().value("type");
         if (typeref.isEmpty() || typeref == "any")
             f.matchtype = FilterMatchType::AnyCanMatch;
         else
@@ -671,7 +672,7 @@ int WordAttributeFilterList::itemIndex(const QString &name)
     return it - list.begin();
 }
 
-int WordAttributeFilterList::itemIndex(const QStringRef &name)
+int WordAttributeFilterList::itemIndex(const QStringView &name)
 {
     auto it = std::find_if(list.begin(), list.end(), [&name](const WordAttributeFilter &f) { return f.name == name; });
     if (it == list.end())
@@ -1857,10 +1858,10 @@ void TextSearchTree::findWords(std::vector<int> &result, QString search, bool ex
             (reversed && qcharncmp(search.constData(), word + wlen - search.size(), search.size()))))
             ;// result.erase(result.begin() + ix);
         else if ((sameform && infsize > 0 && search.size() > infsize) &&
-            ((exact && (qcharncmp(word, search.constData(), wlen - infsize) || hiraganize(word + wlen - infsize) != search.rightRef(infsize))) ||
+            ((exact && (qcharncmp(word, search.constData(), wlen - infsize) || hiraganize(word + wlen - infsize) != search.right(infsize))) ||
             (!reversed && !exact /* in theory reversed is always true, because only word endings are checked when deinflecting. */) ||
             ((reversed || exact) && (qcharncmp(search.constData(), word + wlen - search.size(), search.size() - infsize) ||
-            search.rightRef(infsize) != hiraganize(word + wlen - infsize)))))
+            search.right(infsize) != hiraganize(word + wlen - infsize)))))
             ;// result.erase(result.begin() + ix);
         else
             result.push_back(windex);
@@ -1934,10 +1935,10 @@ bool TextSearchTree::wordMatches(int windex, QString search, bool exact, bool sa
         (reversed && qcharncmp(search.constData(), word + wlen - search.size(), search.size()))))
         return false;// result.erase(result.begin() + ix);
     else if ((sameform && infsize > 0 && search.size() > infsize) &&
-        ((exact && (qcharncmp(word, search.constData(), wlen - infsize) || hiraganize(word + wlen - infsize) != search.rightRef(infsize))) ||
+        ((exact && (qcharncmp(word, search.constData(), wlen - infsize) || hiraganize(word + wlen - infsize) != search.right(infsize))) ||
         (!reversed && !exact /* in theory reversed is always true, because only word endings are checked when deinflecting. */) ||
         ((reversed || exact) && (qcharncmp(search.constData(), word + wlen - search.size(), search.size() - infsize) ||
-        search.rightRef(infsize) != hiraganize(word + wlen - infsize)))))
+        search.right(infsize) != hiraganize(word + wlen - infsize)))))
         return false;// result.erase(result.begin() + ix);
     //else
 
@@ -3637,7 +3638,7 @@ QDateTime Dictionary::fileWriteDate(const QString &filename)
         Temporary::SYSTEMTIME st;
         stream >> st;
         QDateTime r(QDate(st.wYear, st.wMonth, st.wDay), QTime(st.wHour, st.wMinute, st.wSecond, st.wMilliseconds));
-        r.setTimeSpec(Qt::UTC);
+        r.setTimeZone(QTimeZone::UTC);
         return r;
     }
 
@@ -4125,7 +4126,7 @@ void Dictionary::exportUserData(const QString &filename, std::vector<KanjiGroup*
         return;
 
     QTextStream stream(&f);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
 
     // File-format description in English. This won't get translated as the export file is not
     // meant for human reading anyway, but can help others if they wish to use the file.
@@ -4344,7 +4345,7 @@ void Dictionary::exportDictionary(const QString &filename, bool limit, const std
         return;
 
     QTextStream stream(&f);
-    stream.setCodec("UTF-8");
+    stream.setEncoding(QStringConverter::Utf8);
 
     // File-format description in English. This won't get translated as the export file is not
     // meant for human reading anyway, but can help others if they wish to use the file.
@@ -5501,12 +5502,12 @@ void Dictionary::findKanjiWords(std::vector<int> &result, QString search, Search
         }
         else if (wildcards == (int)SearchWildcard::AnyAfter) // Kanji must start with search string.
         {
-            if (k.leftRef(search.size()) == search)
+            if (k.left(search.size()) == search)
                 result.push_back(wordlist[ix]);
         }
         else if (wildcards == (int)SearchWildcard::AnyBefore) // Kanji must end with search string.
         {
-            if (k.rightRef(search.size()) == search)
+            if (k.right(search.size()) == search)
                 result.push_back(wordlist[ix]);
         }
         else // Kanji must contain the search string somewhere in the middle.
@@ -5539,12 +5540,12 @@ bool Dictionary::wordMatchesKanjiSearch(int windex, QString search, SearchWildca
     }
     else if (wildcards == (int)SearchWildcard::AnyAfter) // Kanji must start with search string.
     {
-        if (k.leftRef(search.size()) == search)
+        if (k.left(search.size()) == search)
             return true;
     }
     else if (wildcards == (int)SearchWildcard::AnyBefore) // Kanji must end with search string.
     {
-        if (k.rightRef(search.size()) == search)
+        if (k.right(search.size()) == search)
             return true;
     }
     else

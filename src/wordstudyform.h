@@ -42,7 +42,7 @@ public:
 signals:
     void clicked(int);
 protected:
-    virtual void enterEvent(QEvent *e) override;
+    virtual void enterEvent(QEnterEvent *e) override;
     virtual void leaveEvent(QEvent *e) override;
     virtual void mousePressEvent(QMouseEvent *e) override;
 private:
