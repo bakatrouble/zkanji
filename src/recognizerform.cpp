@@ -8,7 +8,6 @@
 #include <QtEvents>
 #include <QStylePainter>
 #include <qfont.h>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <QWindow>
 
@@ -28,6 +27,7 @@
 #include "globalui.h"
 #include "generalsettings.h"
 #include "formstates.h"
+#include "zkanjiwidget.h"
 
 
 //-------------------------------------------------------------
@@ -595,7 +595,7 @@ void RecognizerForm::popup(QToolButton *btn)
 
         if (same)
         {
-            instance->setParent(qApp->desktop());
+            instance->setParent(nullptr);  // qApp->desktop());
             return;
         }
     }
@@ -604,7 +604,7 @@ void RecognizerForm::popup(QToolButton *btn)
         button->setChecked(false);
 
     if (instance != nullptr)
-        instance->setParent(qApp->desktop());
+        instance->setParent(nullptr);  // qApp->desktop());
 
     button = nullptr;
     edit = nullptr;
@@ -739,7 +739,6 @@ bool RecognizerForm::event(QEvent *e)
     if (e->type() == QEvent::MouseButtonPress) {
         if (childAt(((QMouseEvent*)e)->pos()) == ui->dragSpace) {
             windowHandle()->startSystemMove();
-            qInfo() << "MouseButtonPress" << Qt::endl;
         }
     }
 
@@ -753,7 +752,7 @@ void RecognizerForm::hideEvent(QHideEvent *e)
     // The attribute is set when the form is first created, see constructor.
     if (!testAttribute(Qt::WA_DontShowOnScreen))
     {
-        setParent(qApp->desktop());
+        setParent(nullptr);  // qApp->desktop());
 
         qApp->postEvent(p, new RecognizerHiddenEvent);
 
@@ -840,7 +839,7 @@ void RecognizerForm::douninstall(QToolButton *btn, bool destroyed)
     if (btn == button)
     {
         if (instance != nullptr)
-            instance->setParent(qApp->desktop());
+            instance->setParent(nullptr);  // qApp->desktop());
 
         if (!destroyed && button != nullptr)
             button->setChecked(false);
@@ -881,7 +880,7 @@ void RecognizerForm::savePosition()
     //    return;
 
     FormStates::recognizer.rect = geometry();
-    FormStates::recognizer.screen = qApp->desktop()->screenGeometry(this);
+    FormStates::recognizer.screen = this->screen()->geometry();
 }
 
 
@@ -967,7 +966,7 @@ bool RecognizerObject::event(QEvent *e)
             // Move the window above or below the button.
             QSize siz = RecognizerForm::instance->resizing((int)GrabSide::Bottom, FormStates::recognizer.rect).size();
 
-            QRect r = qApp->desktop()->availableGeometry(btn);
+            QRect r = btn->screen()->availableGeometry();
             QRect br = btn->geometry();
             QWidget *btnparent = (QWidget*)btn->parent();
 
@@ -1011,7 +1010,7 @@ bool RecognizerObject::event(QEvent *e)
 
         FormStates::recognizer.rect  = RecognizerForm::instance->geometry();
         if (sg.isEmpty())
-            sg = qApp->desktop()->screenGeometry(RecognizerForm::instance);
+            sg = RecognizerForm::instance->screen()->geometry();
         FormStates::recognizer.screen = sg;
         return true;
     }
@@ -1033,7 +1032,7 @@ bool RecognizerObject::event(QEvent *e)
 
         if (RecognizerForm::instance != nullptr)
         {
-            RecognizerForm::instance->setParent(qApp->desktop());
+            RecognizerForm::instance->setParent(nullptr);  // qApp->desktop());
             RecognizerForm::instance->windowHandle()->destroy();
         }
 

@@ -9,7 +9,6 @@
 #include <QtSvg>
 #include <QSvgRenderer>
 #include <QByteArray>
-#include <QDesktopWidget>
 #include <QApplication>
 
 #include "kanjiinfoform.h"

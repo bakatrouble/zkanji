@@ -6,7 +6,6 @@
 
 #include <QtEvents>
 #include <QPainter>
-#include <QDesktopWidget>
 #include <QStatusBar>
 #include "kanjireadingpracticeform.h"
 #include "ui_kanjireadingpracticeform.h"
@@ -161,7 +160,7 @@ void KanjiReadingPracticeForm::exec()
     setAttribute(Qt::WA_DontShowOnScreen, false);
 
     QRect r = frameGeometry();
-    QRect sr = qApp->desktop()->screenGeometry((QWidget*)gUI->mainForm());
+    QRect sr = ((QWidget*)gUI->mainForm())->screen()->geometry();
     move(sr.left() + (sr.width() - r.width()) / 2, sr.top() + (sr.height() - r.height()) / 2);
 
     gUI->hideAppWindows();

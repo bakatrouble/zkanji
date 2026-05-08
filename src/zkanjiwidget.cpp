@@ -6,7 +6,6 @@
 
 #include <QStackedLayout>
 #include <QPainter>
-#include <QDesktopWidget>
 #include <QSplitter>
 #include <QStylePainter>
 #include <QXmlStreamWriter>
@@ -49,7 +48,7 @@ void DropMenu::showEvent(QShowEvent *event)
     if (button == nullptr)
         return;
 
-    QRect desk = qApp->desktop()->availableGeometry(button);
+    QRect desk = button->screen()->availableGeometry();
     QSize s = sizeHint();
 
     QPoint pos = button->mapToGlobal(QPoint(0, button->height()));
@@ -224,14 +223,14 @@ void ZKanjiWidget::saveXMLSettings(QXmlStreamWriter &writer) const
 
 void ZKanjiWidget::loadXMLSettings(QXmlStreamReader &reader)
 {
-    QStringRef modestr = reader.attributes().value("mode");
+    QStringView modestr = reader.attributes().value("mode");
     if (modestr == "wordgroups")
         setMode(ViewModes::WordGroup);
     else if (modestr == "kanjigroups")
         setMode(ViewModes::KanjiGroup);
     else if (modestr == "kanjisearch")
         setMode(ViewModes::KanjiSearch);
-    QStringRef langstr = reader.attributes().value("language");
+    QStringView langstr = reader.attributes().value("language");
     for (int ix = 0, siz = ZKanji::dictionaryCount(); ix != siz; ++ix)
     {
         if (langstr == ZKanji::dictionary(ix)->name())

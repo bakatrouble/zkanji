@@ -8,7 +8,6 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QMenu>
-#include <QDesktopWidget>
 #include <QSignalMapper>
 #include <QDesktopServices>
 #include "wordstudyform.h"
@@ -98,7 +97,7 @@ void ChoiceLabel::setActive(bool a)
     setStyleSheet(QString());
 }
 
-void ChoiceLabel::enterEvent(QEvent *e)
+void ChoiceLabel::enterEvent(QEnterEvent *e)
 {
     if (active)
         setStyleSheet(QStringLiteral("background-color: %1; color: %2").arg(palette().color(QPalette::Active, QPalette::Highlight).name()).arg(palette().color(QPalette::Active, QPalette::HighlightedText).name()));
@@ -404,7 +403,7 @@ void WordStudyForm::exec(WordDeck *d)
     ui->wrongLabel->setVisible(Settings::study.showestimate);
 
     QRect r = frameGeometry();
-    QRect sr = qApp->desktop()->screenGeometry((QWidget*)gUI->mainForm());
+    QRect sr = ((QWidget*)gUI->mainForm())->screen()->geometry();
     move(sr.left() + (sr.width() - r.width()) / 2, sr.top() + (sr.height() - r.height()) / 2);
 
     gUI->hideAppWindows();
@@ -492,7 +491,7 @@ void WordStudyForm::exec(WordStudy *s)
     setAttribute(Qt::WA_DontShowOnScreen, false);
 
     QRect r = frameGeometry();
-    QRect sr = qApp->desktop()->screenGeometry((QWidget*)gUI->mainForm());
+    QRect sr = ((QWidget*)gUI->mainForm())->screen()->geometry();
     move(sr.left() + (sr.width() - r.width()) / 2, sr.top() + (sr.height() - r.height()) / 2);
 
     gUI->hideAppWindows();

@@ -8,7 +8,6 @@
 #include <QDesktopServices>
 #include <QPushButton>
 #include <QScrollBar>
-#include <QDesktopWidget>
 #include <chrono>
 #include <thread>
 #include <list>

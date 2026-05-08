@@ -7,8 +7,8 @@
 #include "stayontop_x11.h"
 
 #ifdef Q_OS_LINUX
+#include <QGuiApplication>
 #include <X11/Xlib.h>
-#include <QX11Info>
 #include <xcb/xcb.h>
 
 #define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
@@ -17,26 +17,29 @@
 
 void x11_window_set_on_top(/*Display* display, Window xid*/ QWidget *w, bool ontop)
 {
-    Display *display = QX11Info::display();
-    Window xid = w->winId();
+    if (auto *x11App = qGuiApp->nativeInterface<QNativeInterface::QX11Application>())
+    {
+        Display *display = x11App->display() ;
+        Window xid = w->winId();
 
-    XEvent event;
-    event.xclient.type = ClientMessage;
-    event.xclient.serial = 0;
-    event.xclient.send_event = True;
-    event.xclient.display = display;
-    event.xclient.window = xid;
-    event.xclient.message_type = XInternAtom(display, "_NET_WM_STATE", False);
-    event.xclient.format = 32;
+        XEvent event;
+        event.xclient.type = ClientMessage;
+        event.xclient.serial = 0;
+        event.xclient.send_event = True;
+        event.xclient.display = display;
+        event.xclient.window = xid;
+        event.xclient.message_type = XInternAtom(display, "_NET_WM_STATE", False);
+        event.xclient.format = 32;
 
-    event.xclient.data.l[0] = ontop ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
-    event.xclient.data.l[1] = XInternAtom(display, "_NET_WM_STATE_ABOVE", False);
-    event.xclient.data.l[2] = 0; //unused.
-    event.xclient.data.l[3] = 0;
-    event.xclient.data.l[4] = 0;
+        event.xclient.data.l[0] = ontop ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+        event.xclient.data.l[1] = XInternAtom(display, "_NET_WM_STATE_ABOVE", False);
+        event.xclient.data.l[2] = 0; //unused.
+        event.xclient.data.l[3] = 0;
+        event.xclient.data.l[4] = 0;
 
-    /*return*/ XSendEvent(display, DefaultRootWindow(display), False,
-        SubstructureRedirectMask | SubstructureNotifyMask, &event);
+        /*return*/ XSendEvent(display, DefaultRootWindow(display), False,
+            SubstructureRedirectMask | SubstructureNotifyMask, &event);
+    }
 }
 
 #endif // Q_OS_LINUX

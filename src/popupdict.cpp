@@ -6,7 +6,6 @@
 
 #include <QtEvents>
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QStylePainter>
 #include <QClipboard>
@@ -158,7 +157,7 @@ void PopupDictionary::resizeEvent(QResizeEvent *e)
     if (FormStates::popupdict.floating)
     {
         FormStates::popupdict.floatrect = geometry();
-        QRect sg = qApp->desktop()->screenGeometry(this);
+        QRect sg = this->screen()->geometry();
         FormStates::popupdict.floatrect.moveTo(FormStates::popupdict.floatrect.topLeft() - sg.topLeft());
     }
     else
@@ -173,7 +172,7 @@ void PopupDictionary::moveEvent(QMoveEvent *e)
         return;
 
     FormStates::popupdict.floatrect = geometry();
-    QRect sg = qApp->desktop()->screenGeometry(this);
+    QRect sg = this->screen()->geometry();
     FormStates::popupdict.floatrect.moveTo(FormStates::popupdict.floatrect.topLeft() - sg.topLeft());
 }
 
@@ -279,7 +278,7 @@ void PopupDictionary::floatWindow(bool dofloat, int screen)
 
     floating = dofloat;
 
-    QRect ag = (!wasvisible && screen != -1) ? qApp->screens().at(screen)->geometry() : qApp->desktop()->availableGeometry(instance);
+    QRect ag = (!wasvisible && screen != -1) ? qApp->screens().at(screen)->geometry() : instance->screen()->availableGeometry();
 
     if (!dofloat)
     {
@@ -328,7 +327,7 @@ void PopupDictionary::floatWindow(bool dofloat, int screen)
             fr = QRect(ag.left() + ag.width() / 2 - ag.width() / 8, ag.top() + ag.height() / 2 - ag.height() / 16, ag.width() / 4, ag.height() / 8);
         else
         {
-            QRect sg = (!wasvisible && screen != -1) ? qApp->screens().at(screen)->geometry() : qApp->desktop()->screenGeometry(instance);
+            QRect sg = (!wasvisible && screen != -1) ? qApp->screens().at(screen)->geometry() : instance->screen()->geometry();
             fr.moveTo(sg.topLeft() + fr.topLeft());
         }
 
@@ -374,7 +373,7 @@ void PopupDictionary::resizeToFullWidth()
     if (windowHandle()->screen() == nullptr)
         return;
 
-    QRect sr = qApp->desktop()->availableGeometry(instance);
+    QRect sr = instance->screen()->availableGeometry();
     QRect r = geometry();
     r.setLeft(sr.left() + 4);
     r.setWidth(sr.width() - 8);

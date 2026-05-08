@@ -11,7 +11,6 @@
 #include <QLayout>
 #include <QStylePainter>
 #include <QStyleOption>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <qwindow.h>
 #include <qdatetime.h>
@@ -124,7 +123,7 @@ void ZToolTip::paintEvent(QPaintEvent *e)
 {
     QStylePainter p(this);
     QStyleOptionFrame opt;
-    opt.init(this);
+    opt.initFrom(this);
     p.drawPrimitive(QStyle::PE_PanelTipLabel, opt);
     p.end();
 
@@ -135,7 +134,7 @@ void ZToolTip::resizeEvent(QResizeEvent *e)
 {
     QStyleHintReturnMask frameMask;
     QStyleOption option;
-    option.init(this);
+    option.initFrom(this);
     if (qApp->style()->styleHint(QStyle::SH_ToolTip_Mask, &option, this, &frameMask))
         setMask(frameMask.region);
 
@@ -352,7 +351,7 @@ void ZToolTip::updatePosition()
 //    QWidget *screen = qApp->desktop()->screen(qApp->desktop()->isVirtualDesktop() ? qApp->desktop()->screenNumber(showpos) : qApp->desktop()->screenNumber(owner));
 //    setParent(screen, windowFlags());
 //#endif
-    QScreen *screen = qApp->primaryScreen()->virtualSiblings().contains(qApp->primaryScreen()) ? qApp->screenAt(showpos) : qApp->screens().at(qApp->desktop()->screenNumber(owner));
+    QScreen *screen = qApp->primaryScreen()->virtualSiblings().contains(qApp->primaryScreen()) ? qApp->screenAt(showpos) : owner->screen();
     QRect rect = screen->geometry();
 
     QPoint p = showpos + QPoint(2, 24);

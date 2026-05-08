@@ -42,7 +42,7 @@ QCharKind qcharisspace(QChar ch);
 // Returns a pointer to the first character in str which matches ch. If ch is not found
 // returns null. Only set ch to 0 if str is null terminated. If length is set to a positive
 // number, only checks that number of characters in str.
-const QChar* qcharchr(const QChar *str, QChar ch, int length = -1);
+const QChar* qcharchr(const QChar *str, char16_t ch, int length = -1);
 
 int wordcompare(const QChar *kanjia, const QChar *kanaa, const QChar *kanjib, const QChar *kanab);
 
@@ -290,10 +290,10 @@ bool operator==(const QString &a, const QCharString &b);
 bool operator!=(const QString &a, const QCharString &b);
 bool operator==(const QCharString &a, const QString &b);
 bool operator!=(const QCharString &a, const QString &b);
-bool operator==(const QStringRef &a, const QCharString &b);
-bool operator!=(const QStringRef &a, const QCharString &b);
-bool operator==(const QCharString &a, const QStringRef &b);
-bool operator!=(const QCharString &a, const QStringRef &b);
+bool operator==(const QStringView &a, const QCharString &b);
+bool operator!=(const QStringView &a, const QCharString &b);
+bool operator==(const QCharString &a, const QStringView &b);
+bool operator!=(const QCharString &a, const QStringView &b);
 
 bool operator==(const QChar *a, const QCharString &b);
 bool operator==(const QCharString &a, const QChar *b);

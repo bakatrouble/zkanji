@@ -2318,7 +2318,7 @@ int DictionaryListDelegate::characterIndexAt(QPoint pos, QRect itemrect, const Q
         if (x < chwidth)
         {
             if (x >= chwidth - (chwidth / 2))
-                return std::min(str.size(), ix + 1);
+                return std::min(static_cast<int>(str.size()), ix + 1);
             return ix;
         }
         x -= chwidth;

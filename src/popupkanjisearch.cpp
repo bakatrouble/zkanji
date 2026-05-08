@@ -5,7 +5,6 @@
 **/
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
@@ -182,7 +181,7 @@ void PopupKanjiSearch::doPopup(int screen)
 
     ui->pinButton->setIcon(QIcon(!Settings::popup.kanjiautohide ? ":/closex.svg" : ":/pin.svg"));
 
-    QRect sg = screen != -1 ? qApp->screens().at(screen)->geometry() : qApp->desktop()->screenGeometry(instance);
+    QRect sg = screen != -1 ? qApp->screens().at(screen)->geometry() : instance->screen()->geometry();
 
     if (FormStates::popupkanji.floatrect.isValid())
     {
@@ -205,7 +204,7 @@ void PopupKanjiSearch::doPopup(int screen)
     }
     else
     {
-        QRect ag = screen != -1 ? qApp->screens().at(screen)->geometry() : qApp->desktop()->availableGeometry(instance);
+        QRect ag = screen != -1 ? qApp->screens().at(screen)->geometry() : instance->screen()->availableGeometry();
         move(ag.left() + 32, ag.top() + 128);
     }
 
@@ -241,7 +240,7 @@ void PopupKanjiSearch::resizeEvent(QResizeEvent *e)
     if (!isVisible() || ignoreresize)
         return;
 
-    QRect sg = qApp->desktop()->screenGeometry(instance);
+    QRect sg = instance->screen()->geometry();
     QRect r = geometry();
     FormStates::popupkanji.floatrect = QRect(r.topLeft() - sg.topLeft(), r.size());
 }
@@ -253,7 +252,7 @@ void PopupKanjiSearch::moveEvent(QMoveEvent *e)
     if (!isVisible() || ignoreresize)
         return;
 
-    QRect sg = qApp->desktop()->screenGeometry(instance);
+    QRect sg = instance->screen()->geometry();
     QRect r = geometry();
     FormStates::popupkanji.floatrect = QRect(r.topLeft() - sg.topLeft(), r.size());
 }

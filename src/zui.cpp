@@ -17,6 +17,7 @@
 #include <QPainter>
 #include <QByteArray>
 #include <QSvgRenderer>
+#include <QLabel>
 
 #include <cmath>
 #include <memory>
@@ -201,7 +202,7 @@ void loadXMLRadicalFilters(QXmlStreamReader &reader)
     {
         if (reader.name() == "Filter")
         {
-            QStringRef m = reader.attributes().value("mode");
+            QStringView m = reader.attributes().value("mode");
             RadicalFilter filter;
             if (m == "parts")
                 filter.mode = RadicalFilterModes::Parts;
@@ -225,11 +226,11 @@ void loadXMLRadicalFilters(QXmlStreamReader &reader)
                     reader.skipCurrentElement();
                     continue;
                 }
-                auto numbers = reader.attributes().value("rads").split(",");
+                auto numbers = reader.attributes().value("rads").split(',');
                 bool ok = true;
 
                 std::vector<ushort> grp;
-                for (const QStringRef &num : numbers)
+                for (const QStringView &num : numbers)
                 {
                     int val = num.toInt(&ok);
                     if (!ok)
@@ -1325,7 +1326,7 @@ bool operator==(QKeyEvent *e, const QKeySequence &seq)
     if (seq.count() != 1)
         return false;
 
-    int sh = seq[0];
+    QKeyCombination sh = seq[0];
 
     int k = e->key();
     int m = ((int)e->modifiers() & (int)Qt::KeyboardModifierMask);
@@ -1384,7 +1385,7 @@ void JapaneseValidator::fixup(QString &input) const
 
 JapaneseValidator::State JapaneseValidator::validate(QString &input, int &pos) const
 {
-    pos = std::min(pos, input.size());
+    pos = std::min(pos, (int)input.size());
 
     // Remove invalid characters from the input.
     for (int ix = input.size() - 1; ix != -1; --ix)
@@ -1486,7 +1487,7 @@ JapaneseValidator::State JapaneseValidator::validate(QString &input, int &pos) c
                     continue;
 
                 if (inputpos + cpos >= pos)
-                    c = 0;
+                    c = QChar(0);
                 else
                     c = input.at(inputpos + cpos).toLower();
             }

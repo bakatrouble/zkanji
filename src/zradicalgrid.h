@@ -38,7 +38,7 @@ class ZRadicalGrid : public QAbstractScrollArea
     Q_OBJECT
 public:
 
-    static QChar radsymbols[231];
+    static char16_t radsymbols[231];
     static ushort radindexes[231];
     //static QChar partsymbols[267];
     //static ushort partindexes[267];

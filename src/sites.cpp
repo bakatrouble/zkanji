@@ -31,8 +31,8 @@ namespace ZKanji
 
     void loadXMLSite(std::vector<SiteItem> &list, QXmlStreamReader &reader)
     {
-        QStringRef nstr = reader.attributes().value("name").left(32);
-        QStringRef ustr = reader.attributes().value("url").left(2000);
+        QStringView nstr = reader.attributes().value("name").left(32);
+        QStringView ustr = reader.attributes().value("url").left(2000);
 
         if (nstr.isEmpty() && ustr.isEmpty())
             return;

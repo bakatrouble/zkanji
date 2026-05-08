@@ -16,6 +16,7 @@
 #include <QPixmap>
 #include <QSystemTrayIcon>
 #include <QBasicTimer>
+#include <QLayout>
 
 #include <memory>
 

@@ -26,7 +26,7 @@
 namespace ZKanji
 {
     // Same as the radsymbols in ZRadicalGrid, without the added stroke count.
-    QChar radsymbols[214] = {
+    char16_t radsymbols[214] = {
         //1,
         0x4e00, 0x4e28, 0x4e36, 0x4e3f, 0x4e59, 0x4e85,
         //2,
@@ -329,7 +329,7 @@ namespace ZKanji
             for (int ix = 0; ix != siz; ++ix)
             {
                 str[ix * 2] = chr[ix];
-                str[ix * 2 + 1] = 0x2060;
+                str[ix * 2 + 1] = QChar(0x2060);
             }
             on += QString("<font face=\"%1\">%2</font>, ").arg(Settings::fonts.kana.toHtmlEscaped(), str);
         }
@@ -344,7 +344,7 @@ namespace ZKanji
             for (int ix = 0, spansiz = 0; ix != siz; ++ix)
             {
                 str[ix * 2 + spansiz] = chr[ix];
-                str[ix * 2 + 1 + spansiz] = 0x2060;
+                str[ix * 2 + 1 + spansiz] = QChar(0x2060);
                 if (!hasoku && Settings::colors.coloroku && chr[ix] == '.')
                 {
                     QColor c = Settings::uiColor(ColorSettings::Oku);
@@ -837,7 +837,7 @@ KanjiEntry::KanjiEntry()
 {
     index = 0; // Index of kanji in "kanjis" list.
 
-    ch = 0; // The kanji itself.
+    ch = QChar(0); // The kanji itself.
     jis = 0; // jis lookup.
     rad = 0; // B - radical of the kanji.
     crad = 0; // C - classical radical of the kanji.

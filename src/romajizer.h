@@ -60,7 +60,7 @@ QChar hiraganaCh(const QChar *c, int ix);
 bool kanaMatch(const QChar *c1, int pos1, const QChar *c2, int pos2);
 
 extern const char* kanainput[];
-extern const ushort kanaoutput[][3];
+extern const char16_t kanaoutput[][3];
 // Sets pos and size to a range in kanainput and kanaoutput, depending on ch. The range
 // corresponds to syllables starting with ch.
 void findKanaArrays(QChar ch, /*const char** &input, const ushort* output[3],*/ int &pos, int &size);

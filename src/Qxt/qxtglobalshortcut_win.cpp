@@ -1,6 +1,7 @@
-#include "qxtglobalshortcut_p.h"
+// Copyright (C) Oleg Shparber, et al. <https://zealdocs.org>
+// SPDX-License-Identifier: GPL-3.0-or-later
 /****************************************************************************
-** Copyright (c) 2006 - 2011, the LibQxt project.
+// Copyright (C) 2006 - 2011, the LibQxt project.
 ** See the Qxt AUTHORS file for a list of authors and copyright holders.
 ** All rights reserved.
 **
@@ -29,57 +30,57 @@
 ** <http://libqxt.org>  <foundation@libqxt.org>
 *****************************************************************************/
 
+#include "qxtglobalshortcut_p.h"
+
+#include <QGuiApplication>
 #include <qt_windows.h>
 
+bool QxtGlobalShortcutPrivate::isSupported()
+{
+    return QGuiApplication::platformName() == QLatin1String("windows");
+}
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-bool QxtGlobalShortcutPrivate::eventFilter(void* message)
+bool QxtGlobalShortcutPrivate::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
 {
-#else
-bool QxtGlobalShortcutPrivate::nativeEventFilter(const QByteArray & eventType,
-    void * message, long * result)
-{
-    Q_UNUSED(eventType);
-    Q_UNUSED(result);
-#endif
-    MSG* msg = static_cast<MSG*>(message);
-    if (msg->message == WM_HOTKEY)
-    {
+    Q_UNUSED(eventType)
+    Q_UNUSED(result)
+
+    MSG *msg = static_cast<MSG *>(message);
+    if (msg->message == WM_HOTKEY) {
         const quint32 keycode = HIWORD(msg->lParam);
         const quint32 modifiers = LOWORD(msg->lParam);
         activateShortcut(keycode, modifiers);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
-    return prevEventFilter ? prevEventFilter(message) : false;
-#else
-	return false;
-#endif
+    return false;
 }
-
 
 quint32 QxtGlobalShortcutPrivate::nativeModifiers(Qt::KeyboardModifiers modifiers)
 {
     // MOD_ALT, MOD_CONTROL, (MOD_KEYUP), MOD_SHIFT, MOD_WIN
     quint32 native = 0;
-    if (modifiers & Qt::ShiftModifier)
+    if (modifiers & Qt::ShiftModifier) {
         native |= MOD_SHIFT;
-    if (modifiers & Qt::ControlModifier)
+    }
+    if (modifiers & Qt::ControlModifier) {
         native |= MOD_CONTROL;
-    if (modifiers & Qt::AltModifier)
+    }
+    if (modifiers & Qt::AltModifier) {
         native |= MOD_ALT;
-    if (modifiers & Qt::MetaModifier)
+    }
+    if (modifiers & Qt::MetaModifier) {
         native |= MOD_WIN;
+    }
     // TODO: resolve these?
-    //if (modifiers & Qt::KeypadModifier)
-    //if (modifiers & Qt::GroupSwitchModifier)
+    // if (modifiers & Qt::KeypadModifier)
+    // if (modifiers & Qt::GroupSwitchModifier)
     return native;
 }
 
-quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
+quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key, quint32 &extraNativeMods)
 {
-    switch (key)
-    {
+    extraNativeMods = 0;
+    switch (key) {
     case Qt::Key_Escape:
         return VK_ESCAPE;
     case Qt::Key_Tab:
@@ -185,8 +186,8 @@ quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
     case Qt::Key_MediaStop:
         return VK_MEDIA_STOP;
         // couldn't find those in VK_*
-        //case Qt::Key_MediaLast:
-        //case Qt::Key_MediaRecord:
+        // case Qt::Key_MediaLast:
+        // case Qt::Key_MediaRecord:
     case Qt::Key_VolumeDown:
         return VK_VOLUME_DOWN;
     case Qt::Key_VolumeUp:
@@ -237,6 +238,23 @@ quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
         return key;
 
     default:
+        // For keys not in the switch (shifted symbols like ?, !, etc.),
+        // ask Windows to resolve the character to a virtual key + shift state.
+        if (key <= 0xFFFF) {
+            const SHORT vk = VkKeyScanW(static_cast<WCHAR>(key));
+            if (vk != -1) {
+                if (HIBYTE(vk) & 1) {
+                    extraNativeMods |= MOD_SHIFT;
+                }
+                if (HIBYTE(vk) & 2) {
+                    extraNativeMods |= MOD_CONTROL;
+                }
+                if (HIBYTE(vk) & 4) {
+                    extraNativeMods |= MOD_ALT;
+                }
+                return LOBYTE(vk);
+            }
+        }
         return 0;
     }
 }

@@ -17,8 +17,7 @@
 #include <QStringBuilder>
 #include <QTextStream>
 
-//#include <QDesktopWidget>
-//#include <QScreen>
+////#include <QScreen>
 
 #include <initializer_list>
 #include <iostream>
@@ -511,7 +510,7 @@ namespace
 
                         if (!d->saveUserData(ZKanji::userFolder() + "/data/English.zkuser"))
                         {
-                            showAndQuit(qApp->translate("", "Update not finished"), qApp->translate("", "The user data file for the main dictionary couldn't be saved. The file might be compromised.") % QString("\n\n%1").arg(Error::last()));
+                            showAndQuit(qApp->translate("", "Update not finished"), qApp->translate("", "The user data file for the main dictionary couldn't be saved. The file might be compromised.") % QString("\n\n%1").arg(Error::last().toString()));
                         }
                     }
                     else if (d->pre2015())
@@ -616,7 +615,10 @@ namespace
     void loadRecognizerData()
     {
         if (!QFileInfo::exists(ZKanji::appFolder() + "/data/zdict.zks"))
+        {
+            qInfo("Recognizer model was not found");
             return;
+        }
 
         try
         {

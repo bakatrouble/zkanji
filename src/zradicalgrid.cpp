@@ -27,7 +27,7 @@
 
 
 // Same as the radsymbols in namespace ZKanji, with the added stroke count.
-QChar ZRadicalGrid::radsymbols[231] = {
+char16_t ZRadicalGrid::radsymbols[231] = {
     1,
     0x4e00, 0x4e28, 0x4e36, 0x4e3f, 0x4e59, 0x4e85,
     2,
@@ -796,13 +796,13 @@ void ZRadicalGrid::filter()
     if (mode == RadicalFilterModes::Radicals)
     {
         int cnt = 231;
-        QChar *arr = radsymbols;
+        char16_t *arr = radsymbols;
         int strokeindex = -1;
         if (smin == 0 || (smin == 1 && smax >= 17))
         {
             for (int ix = 0; ix != cnt; ++ix)
             {
-                if (arr[ix].unicode() < 0x20)
+                if (arr[ix] < 0x20)
                 {
                     strokeindex = ix;
                     continue;
@@ -811,7 +811,7 @@ void ZRadicalGrid::filter()
                     continue;
                 if (strokeindex != -1)
                 {
-                    list.push_back((ushort)-arr[strokeindex].unicode());
+                    list.push_back((ushort)-arr[strokeindex]);
                     strokeindex = -1;
                 }
                 list.push_back(ix);
@@ -823,17 +823,17 @@ void ZRadicalGrid::filter()
             int ix = 0;
             for (; spos != smin && ix != cnt; ++ix)
             {
-                if (arr[ix].unicode() < 0x20)
-                    spos = arr[ix].unicode();
+                if (arr[ix] < 0x20)
+                    spos = arr[ix];
             }
             strokeindex = ix - 1;
 
             for (; ix != cnt; ++ix)
             {
-                if (arr[ix].unicode() < 0x20)
+                if (arr[ix] < 0x20)
                 {
                     strokeindex = ix;
-                    spos = arr[ix].unicode();
+                    spos = arr[ix];
                     continue;
                 }
                 if (spos > smax)
@@ -842,7 +842,7 @@ void ZRadicalGrid::filter()
                 {
                     if (strokeindex != -1)
                     {
-                        list.push_back((ushort)-arr[strokeindex].unicode());
+                        list.push_back((ushort)-arr[strokeindex]);
                         strokeindex = -1;
                     }
                     list.push_back(ix);
@@ -1320,17 +1320,17 @@ QChar ZRadicalGrid::itemChar(int index)
     if (mode == RadicalFilterModes::Parts)
     {
         if (list[index] >= ZKanji::radklist.size())
-            return 0;
+            return QChar(0);
         return QChar(ZKanji::radklist[list[index]].first);
     }
     if (mode == RadicalFilterModes::Radicals)
     {
         if (list[index] >= 321)
-            return 0;
+            return QChar(0);
         return radsymbols[list[index]];
     }
     if (list[index] >= ZKanji::radlist.size())
-        return 0;
+        return QChar(0);
     return ZKanji::radlist[list[index]]->ch;
 }
 
@@ -1475,7 +1475,7 @@ int RadicalFiltersModel::filterIndex(const RadicalFilter &filter)
 //    if (str.isEmpty() || str.size() == 1 || str.at(1) != ':')
 //        return f;
 //
-//    QVector<QStringRef> grps;
+//    QVector<QStringView> grps;
 //    switch (str.at(0).unicode())
 //    {
 //    case '1':
@@ -1513,7 +1513,7 @@ int RadicalFiltersModel::filterIndex(const RadicalFilter &filter)
 //    for (int ix = 0, siz = grps.size(); ix != siz; ++ix)
 //    {
 //        int partpos = 0;
-//        const QStringRef &ref = grps.at(ix);
+//        const QStringView &ref = grps.at(ix);
 //        std::vector<ushort> &sel = f.groups[ix];
 //        sel.reserve(ref.size());
 //        for (int iy = 0, ysiz = ref.size(); iy != ysiz; ++iy)

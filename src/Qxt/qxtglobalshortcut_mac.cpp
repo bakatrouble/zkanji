@@ -1,6 +1,7 @@
-#include <Carbon/Carbon.h>
+// Copyright (C) Oleg Shparber, et al. <https://zealdocs.org>
+// SPDX-License-Identifier: GPL-3.0-or-later
 /****************************************************************************
-** Copyright (c) 2006 - 2011, the LibQxt project.
+// Copyright (C) 2006 - 2011, the LibQxt project.
 ** See the Qxt AUTHORS file for a list of authors and copyright holders.
 ** All rights reserved.
 **
@@ -30,53 +31,75 @@
 *****************************************************************************/
 
 #include "qxtglobalshortcut_p.h"
-#include <QMap>
-#include <QHash>
-#include <QtDebug>
-#include <QApplication>
 
+#include <QGuiApplication>
+#include <QHash>
+#include <QMap>
+
+#include <Carbon/Carbon.h>
+
+namespace {
 typedef QPair<uint, uint> Identifier;
 static QMap<quint32, EventHotKeyRef> keyRefs;
 static QHash<Identifier, quint32> keyIDs;
 static quint32 hotKeySerial = 0;
 static bool qxt_mac_handler_installed = false;
 
-OSStatus qxt_mac_handle_hot_key(EventHandlerCallRef nextHandler, EventRef event, void* data)
+OSStatus qxt_mac_handle_hot_key(EventHandlerCallRef nextHandler, EventRef event, void *data)
 {
-    Q_UNUSED(nextHandler);
-    Q_UNUSED(data);
-    if (GetEventClass(event) == kEventClassKeyboard && GetEventKind(event) == kEventHotKeyPressed)
-    {
+    Q_UNUSED(nextHandler)
+    Q_UNUSED(data)
+    if (GetEventClass(event) == kEventClassKeyboard && GetEventKind(event) == kEventHotKeyPressed) {
         EventHotKeyID keyID;
         GetEventParameter(event, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(keyID), NULL, &keyID);
         Identifier id = keyIDs.key(keyID.id);
         QxtGlobalShortcutPrivate::activateShortcut(id.second, id.first);
     }
+
     return noErr;
+}
+} // namespace
+
+bool QxtGlobalShortcutPrivate::isSupported()
+{
+    return QGuiApplication::platformName() == QLatin1String("cocoa");
+}
+
+bool QxtGlobalShortcutPrivate::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
+{
+    Q_UNUSED(eventType)
+    Q_UNUSED(message)
+    Q_UNUSED(result)
+    return false;
 }
 
 quint32 QxtGlobalShortcutPrivate::nativeModifiers(Qt::KeyboardModifiers modifiers)
 {
     quint32 native = 0;
-    if (modifiers & Qt::ShiftModifier)
+    if (modifiers & Qt::ShiftModifier) {
         native |= shiftKey;
-    if (modifiers & Qt::ControlModifier)
+    }
+    if (modifiers & Qt::ControlModifier) {
         native |= cmdKey;
-    if (modifiers & Qt::AltModifier)
+    }
+    if (modifiers & Qt::AltModifier) {
         native |= optionKey;
-    if (modifiers & Qt::MetaModifier)
+    }
+    if (modifiers & Qt::MetaModifier) {
         native |= controlKey;
-    if (modifiers & Qt::KeypadModifier)
+    }
+    if (modifiers & Qt::KeypadModifier) {
         native |= kEventKeyModifierNumLockMask;
+    }
     return native;
 }
 
-quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
+quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key, quint32 &extraNativeMods)
 {
+    extraNativeMods = 0;
     UTF16Char ch;
     // Constants found in NSEvent.h from AppKit.framework
-    switch (key)
-    {
+    switch (key) {
     case Qt::Key_Return:
         return kVK_Return;
     case Qt::Key_Enter:
@@ -162,60 +185,78 @@ quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
     case Qt::Key_Up:
         return kVK_UpArrow;
     default:
-        ;
+        break;
     }
 
-    if (key == Qt::Key_Escape)	ch = 27;
-    else if (key == Qt::Key_Return) ch = 13;
-    else if (key == Qt::Key_Enter) ch = 3;
-    else if (key == Qt::Key_Tab) ch = 9;
-    else ch = key;
+    if (key == Qt::Key_Escape) {
+        ch = 27;
+    } else if (key == Qt::Key_Return) {
+        ch = 13;
+    } else if (key == Qt::Key_Enter) {
+        ch = 3;
+    } else if (key == Qt::Key_Tab) {
+        ch = 9;
+    } else {
+        ch = key;
+    }
 
     CFDataRef currentLayoutData;
     TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
 
-    if (currentKeyboard == NULL)
+    if (currentKeyboard == NULL) {
         return 0;
+    }
 
     currentLayoutData = (CFDataRef)TISGetInputSourceProperty(currentKeyboard, kTISPropertyUnicodeKeyLayoutData);
     CFRelease(currentKeyboard);
-    if (currentLayoutData == NULL)
+    if (currentLayoutData == NULL) {
         return 0;
+    }
 
-    UCKeyboardLayout* header = (UCKeyboardLayout*)CFDataGetBytePtr(currentLayoutData);
-    UCKeyboardTypeHeader* table = header->keyboardTypeList;
+    UCKeyboardLayout *header = (UCKeyboardLayout *)CFDataGetBytePtr(currentLayoutData);
+    UCKeyboardTypeHeader *table = header->keyboardTypeList;
 
-    uint8_t *data = (uint8_t*)header;
+    uint8_t *data = (uint8_t *)header;
     // God, would a little documentation for this shit kill you...
-    for (quint32 i=0; i < header->keyboardTypeCount; i++)
-    {
-        UCKeyStateRecordsIndex* stateRec = 0;
-        if (table[i].keyStateRecordsIndexOffset != 0)
-        {
-            stateRec = reinterpret_cast<UCKeyStateRecordsIndex*>(data + table[i].keyStateRecordsIndexOffset);
-            if (stateRec->keyStateRecordsIndexFormat != kUCKeyStateRecordsIndexFormat) stateRec = 0;
+    for (quint32 i = 0; i < header->keyboardTypeCount; ++i) {
+        UCKeyStateRecordsIndex *stateRec = 0;
+        if (table[i].keyStateRecordsIndexOffset != 0) {
+            stateRec = reinterpret_cast<UCKeyStateRecordsIndex *>(data + table[i].keyStateRecordsIndexOffset);
+            if (stateRec->keyStateRecordsIndexFormat != kUCKeyStateRecordsIndexFormat) {
+                stateRec = 0;
+            }
         }
 
-        UCKeyToCharTableIndex* charTable = reinterpret_cast<UCKeyToCharTableIndex*>(data + table[i].keyToCharTableIndexOffset);
-        if (charTable->keyToCharTableIndexFormat != kUCKeyToCharTableIndexFormat) continue;
+        UCKeyToCharTableIndex *charTable = reinterpret_cast<UCKeyToCharTableIndex *>(
+            data + table[i].keyToCharTableIndexOffset);
+        if (charTable->keyToCharTableIndexFormat != kUCKeyToCharTableIndexFormat) {
+            continue;
+        }
 
-        for (quint32 j=0; j < charTable->keyToCharTableCount; j++)
-        {
-            UCKeyOutput* keyToChar = reinterpret_cast<UCKeyOutput*>(data + charTable->keyToCharTableOffsets[j]);
-            for (quint32 k=0; k < charTable->keyToCharTableSize; k++)
-            {
-                if (keyToChar[k] & kUCKeyOutputTestForIndexMask)
-                {
+        for (quint32 j = 0; j < charTable->keyToCharTableCount; ++j) {
+            UCKeyOutput *keyToChar = reinterpret_cast<UCKeyOutput *>(data + charTable->keyToCharTableOffsets[j]);
+            for (quint32 k = 0; k < charTable->keyToCharTableSize; ++k) {
+                bool found = false;
+                if (keyToChar[k] & kUCKeyOutputTestForIndexMask) {
                     long idx = keyToChar[k] & kUCKeyOutputGetIndexMask;
-                    if (stateRec && idx < stateRec->keyStateRecordCount)
-                    {
-                        UCKeyStateRecord* rec = reinterpret_cast<UCKeyStateRecord*>(data + stateRec->keyStateRecordOffsets[idx]);
-                        if (rec->stateZeroCharData == ch) return k;
+                    if (stateRec && idx < stateRec->keyStateRecordCount) {
+                        UCKeyStateRecord *rec = reinterpret_cast<UCKeyStateRecord *>(
+                            data + stateRec->keyStateRecordOffsets[idx]);
+                        if (rec->stateZeroCharData == ch) {
+                            found = true;
+                        }
+                    }
+                } else if (!(keyToChar[k] & kUCKeyOutputSequenceIndexMask) && keyToChar[k] < 0xFFFE) {
+                    if (keyToChar[k] == ch) {
+                        found = true;
                     }
                 }
-                else if (!(keyToChar[k] & kUCKeyOutputSequenceIndexMask) && keyToChar[k] < 0xFFFE)
-                {
-                    if (keyToChar[k] == ch) return k;
+                if (found) {
+                    // Table index 0 = no modifiers, 1 = Shift.
+                    if (j == 1) {
+                        extraNativeMods |= shiftKey;
+                    }
+                    return k;
                 }
             } // for k
         } // for j
@@ -225,8 +266,7 @@ quint32 QxtGlobalShortcutPrivate::nativeKeycode(Qt::Key key)
 
 bool QxtGlobalShortcutPrivate::registerShortcut(quint32 nativeKey, quint32 nativeMods)
 {
-    if (!qxt_mac_handler_installed)
-    {
+    if (!qxt_mac_handler_installed) {
         EventTypeSpec t;
         t.eventClass = kEventClassKeyboard;
         t.eventKind = kEventHotKeyPressed;
@@ -239,8 +279,7 @@ bool QxtGlobalShortcutPrivate::registerShortcut(quint32 nativeKey, quint32 nativ
 
     EventHotKeyRef ref = 0;
     bool rv = !RegisterEventHotKey(nativeKey, nativeMods, keyID, GetApplicationEventTarget(), 0, &ref);
-    if (rv)
-    {
+    if (rv) {
         keyIDs.insert(Identifier(nativeMods, nativeKey), keyID.id);
         keyRefs.insert(keyID.id, ref);
     }
@@ -250,7 +289,9 @@ bool QxtGlobalShortcutPrivate::registerShortcut(quint32 nativeKey, quint32 nativ
 bool QxtGlobalShortcutPrivate::unregisterShortcut(quint32 nativeKey, quint32 nativeMods)
 {
     Identifier id(nativeMods, nativeKey);
-    if (!keyIDs.contains(id)) return false;
+    if (!keyIDs.contains(id)) {
+        return false;
+    }
 
     EventHotKeyRef ref = keyRefs.take(keyIDs[id]);
     keyIDs.remove(id);
