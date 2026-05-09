@@ -47,7 +47,7 @@ ZToolTip::ZToolTip(const QPoint &screenpos, QWidget *content, QWidget *owner, co
     setPalette(QToolTip::palette());
     
     content->setParent(this);
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+    auto *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
     int margin = qApp->style()->pixelMetric(QStyle::PM_ToolTipLabelFrameWidth, 0, this);
     layout->setContentsMargins(margin, margin, margin, margin);
     setLayout(layout);
@@ -89,7 +89,7 @@ ZToolTip::~ZToolTip()
     if (instance)
         instance->hideNow();
 #ifdef Q_OS_WIN
-    instance = new ZToolTip(screenpos, content, displayer, disprect, mshideafter, msshowafter, qApp->desktop()->screen(qApp->desktop()->isVirtualDesktop() ? qApp->desktop()->screenNumber(screenpos) : qApp->desktop()->screenNumber(displayer)));
+    instance = new ZToolTip(screenpos, content, displayer, disprect, mshideafter, msshowafter, displayer);
 #else
     instance = new ZToolTip(screenpos, content, displayer, disprect, mshideafter, msshowafter, displayer);
 #endif

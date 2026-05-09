@@ -12,19 +12,21 @@
 #include <QVariant>
 #include <QBasicTimer>
 
+#include "wordstudyform.h"
+
 // Qt looks for a base class called QTipLabel which is inaccessable as it's private, when
 // deciding whether to add a drop shadow to windows with the ToolTip window flag. This hack
 // makes the moc mark ZToolTip as derived from Qt tooltips.
-class QTipLabel : public QWidget
-{
-    Q_OBJECT
-public:
-    QTipLabel(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {}
-    virtual ~QTipLabel() {};
-};
+// class QTipLabel : public QWidget
+// {
+//     // Q_OBJECT
+// public:
+//     QTipLabel(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {}
+//     virtual ~QTipLabel() {};
+// };
     
 
-class ZToolTip : public QTipLabel
+class ZToolTip : public QWidget
 {
     Q_OBJECT
 public:
@@ -92,7 +94,7 @@ private:
     qint64 fadestart;
     bool fadein;
 
-    typedef QTipLabel base;
+    typedef QWidget base;
 };
 
 

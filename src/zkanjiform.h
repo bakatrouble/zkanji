@@ -174,7 +174,7 @@ protected:
 
 #ifdef Q_OS_WIN
     // Checkes for WM_USER + 999 to wake up when another instance is started
-    virtual bool nativeEvent(const QByteArray &etype, void *msg, long *result) override;
+    virtual bool nativeEvent(const QByteArray &etype, void *msg, qintptr *result) override;
 #endif
 private slots:
     void appFocusChanged(QWidget *prev, QWidget *current);

@@ -44,7 +44,7 @@
 #include "dialogs.h"
 
 #ifdef WIN32
-#include <Windows.h>
+#include <windows.h>
 #else
 #include <QLocalServer>
 #include <QLocalSocket>
@@ -715,9 +715,9 @@ namespace
         {
             if ((args[ix] == "-i" || args[ix] == "-ie" || args[ix] == "-ei") && !ifound)
             {
-                const QString& d = args[ix + 1];
+                QString& d = args[ix + 1];
 #ifdef Q_OS_WIN
-                d = d.replace(QChar('\\'), "/");
+                d = d.replace(QChar('\\'), QChar('/'));
                 if (d[d.size() - 1] == QChar('/'))
                     d = d.left(d.size() - 1);
 #endif
@@ -727,9 +727,9 @@ namespace
 
             if ((args[ix] == "-e" || args[ix] == "-ie" || args[ix] == "-ei") && !efound)
             {
-                const QString& d = args[ix + 1];
+                QString& d = args[ix + 1];
 #ifdef Q_OS_WIN
-                d = d.replace(QChar('\\'), "/");
+                d = d.replace(QChar('\\'), QChar('/'));
                 if (d[d.size() - 1] == QChar('/'))
                     d = d.left(d.size() - 1);
 #endif

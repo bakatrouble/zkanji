@@ -1260,7 +1260,7 @@ void ZKanjiForm::closeEvent(QCloseEvent *e)
 }
 
 #ifdef Q_OS_WIN
-bool ZKanjiForm::nativeEvent(const QByteArray &etype, void *msg, long *result)
+bool ZKanjiForm::nativeEvent(const QByteArray &etype, void *msg, qintptr *result)
 {
     if (etype != "windows_generic_MSG")
         return base::nativeEvent(etype, msg, result);
