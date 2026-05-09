@@ -779,7 +779,7 @@ WordAttribWidget::WordAttribWidget(QWidget *parent) : base(parent), ui(new Ui::W
 
     auto *oldselmodel = ui->listView->selectionModel();
     ui->listView->setModel(listmodel);
-    if (oldselmodel != ui->listView->selectionModel())
+    if (oldselmodel != nullptr && oldselmodel != ui->listView->selectionModel())
         oldselmodel->deleteLater();
 
     connect(ui->filterEdit, &QLineEdit::textChanged, this, &WordAttribWidget::textChanged);
